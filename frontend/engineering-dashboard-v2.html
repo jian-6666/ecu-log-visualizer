@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Engineering Dashboard - ECU Log Visualizer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="engineering-dashboard-v2.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="header-content">
+            <div class="header-left">
+                <div class="project-badge">
+                    <div class="status-pulse"></div>
+                    <span class="project-name">ECU Log Visualizer</span>
+                </div>
+                <div class="header-meta">
+                    <span class="last-update" id="lastUpdate">Last updated: Never</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="btn-refresh" id="refreshButton">
+                    <svg class="icon-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+                    </svg>
+                    <span>Refresh</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="dashboard-main">
+        <!-- Pipeline Flow Section -->
+        <section class="pipeline-section">
+            <h2 class="section-title">DevOps Pipeline Flow</h2>
+            <div class="pipeline-flow" id="pipelineFlow">
+                <!-- Pipeline stages will be dynamically inserted -->
+            </div>
+        </section>
+
+        <!-- Content Grid -->
+        <div class="content-grid">
+            <!-- Activity Timeline (Left) -->
+            <aside class="activity-timeline">
+                <div class="timeline-header">
+                    <h3 class="timeline-title">Activity Timeline</h3>
+                    <span class="timeline-count" id="activityCount">0 events</span>
+                </div>
+                <div class="timeline-content" id="timelineContent">
+                    <!-- Activity events will be dynamically inserted -->
+                </div>
+            </aside>
+
+            <!-- Status Panels (Right) -->
+            <div class="status-panels">
+                <!-- CI/CD Status Card -->
+                <div class="status-card cicd-card">
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 6v6l4 2"/>
+                            </svg>
+                            <h3 class="card-title">CI/CD Pipeline</h3>
+                        </div>
+                        <span class="card-badge" id="cicdBadge">GitHub Actions</span>
+                    </div>
+                    <div class="card-content" id="cicdContent">
+                        <!-- CI/CD content will be dynamically inserted -->
+                    </div>
+                </div>
+
+                <!-- Docker Card -->
+                <div class="status-card docker-card">
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                            </svg>
+                            <h3 class="card-title">Docker Container</h3>
+                        </div>
+                        <span class="card-badge docker-badge">Containerized</span>
+                    </div>
+                    <div class="card-content" id="dockerContent">
+                        <!-- Docker content will be dynamically inserted -->
+                    </div>
+                </div>
+
+                <!-- Jenkins Card -->
+                <div class="status-card jenkins-card">
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="12" y1="18" x2="12" y2="12"/>
+                                <line x1="9" y1="15" x2="15" y2="15"/>
+                            </svg>
+                            <h3 class="card-title">Jenkins Testing</h3>
+                        </div>
+                        <span class="card-badge jenkins-badge">Automated</span>
+                    </div>
+                    <div class="card-content" id="jenkinsContent">
+                        <!-- Jenkins content will be dynamically inserted -->
+                    </div>
+                </div>
+
+                <!-- Service Health Card -->
+                <div class="status-card service-card">
+                    <div class="card-header">
+                        <div class="card-title-group">
+                            <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                            </svg>
+                            <h3 class="card-title">Service Health</h3>
+                        </div>
+                        <span class="card-badge" id="serviceBadge">Running</span>
+                    </div>
+                    <div class="card-content" id="serviceContent">
+                        <!-- Service content will be dynamically inserted -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="engineering-dashboard-v2.js"></script>
+</body>
+</html>
