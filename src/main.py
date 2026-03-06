@@ -137,6 +137,32 @@ async def get_engineering_dashboard_js():
     raise HTTPException(status_code=404, detail="Engineering Dashboard JS not found")
 
 
+@app.get("/engineering-dashboard-v3.html")
+async def get_engineering_dashboard_v3():
+    """Serve Engineering Dashboard V3 HTML"""
+    dashboard_path = Path(__file__).parent.parent / "frontend" / "engineering-dashboard-v3.html"
+    if dashboard_path.exists():
+        return FileResponse(dashboard_path, media_type="text/html")
+    raise HTTPException(status_code=404, detail="Engineering Dashboard V3 not found")
+
+
+@app.get("/engineering-dashboard-v3.css")
+async def get_engineering_dashboard_v3_css():
+    """Serve Engineering Dashboard V3 CSS"""
+    css_path = Path(__file__).parent.parent / "frontend" / "engineering-dashboard-v3.css"
+    if css_path.exists():
+        return FileResponse(css_path, media_type="text/css")
+    raise HTTPException(status_code=404, detail="Engineering Dashboard V3 CSS not found")
+
+
+@app.get("/engineering-dashboard-v3.js")
+async def get_engineering_dashboard_v3_js():
+    """Serve Engineering Dashboard V3 JavaScript"""
+    js_path = Path(__file__).parent.parent / "frontend" / "engineering-dashboard-v3.js"
+    if js_path.exists():
+        return FileResponse(js_path, media_type="application/javascript")
+    raise HTTPException(status_code=404, detail="Engineering Dashboard V3 JS not found")
+
 
 @app.get("/health")
 async def health_check():
