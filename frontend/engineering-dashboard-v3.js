@@ -1,21 +1,18 @@
-// ===== DevOps Pipeline Dashboard V3 - Complete Implementation =====
+// ===== DevOps Pipeline Dashboard V3 - Complete Redesign =====
 
 // Configuration
 const CONFIG = {
-    refreshInterval: 30000, // 30 seconds
+    refreshInterval: 30000,
     apiBaseUrl: '/api/engineering',
-    repoOwner: 'your-org',
+    repoOwner: 'jian-6666',
     repoName: 'ecu-log-visualizer',
-    jenkinsUrl: 'http://localhost:8080',
-    jenkinsJob: 'ecu-log-visualizer',
     containerName: 'ecu-log-visualizer'
 };
 
-// State Management
+// State
 const state = {
     gitData: null,
     githubData: null,
-    jenkinsData: null,
     dockerData: null,
     lastUpdate: null,
     refreshTimer: null
@@ -46,14 +43,6 @@ const utils = {
             hour: '2-digit',
             minute: '2-digit'
         });
-    },
-
-    formatBytes(bytes) {
-        if (bytes === 0) return '0 B';
-        const k = 1024;
-        const sizes = ['B', 'KB', 'MB', 'GB'];
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
-        return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
     },
 
     truncate(str, length = 50) {
@@ -97,18 +86,6 @@ const api = {
         }
     },
 
-    async fetchJenkinsStatus() {
-        try {
-            const url = `${CONFIG.apiBaseUrl}/cicd/jenkins?jenkins_url=${encodeURIComponent(CONFIG.jenkinsUrl)}&job_name=${CONFIG.jenkinsJob}`;
-            const response = await fetch(url);
-            if (!response.ok) return null;
-            return await response.json();
-        } catch (error) {
-            console.error('Failed to fetch Jenkins status:', error);
-            return null;
-        }
-    },
-
     async fetchDockerStatus() {
         try {
             const url = `${CONFIG.apiBaseUrl}/docker/status?container_name=${CONFIG.containerName}`;
@@ -124,113 +101,115 @@ const api = {
 
 // Render Functions
 const render = {
-    pipelineStages(gitData, githubData, dockerData, jenkinsData) {
-        const stages = [
+    // Render detailed pipeline with all CI/CD steps
+    pipelineFlow(gitData, githubData, dockerData) {
+        const latestCommit = gitData && gitData.length > 0 ? gitData[0] : null;
+        const latestRun = githubData?.latest_run;
+        
+        // Define all pipeline steps
+        const steps = [
             {
-                name: 'Code Commit',
+                name: 'Commit',
                 icon: '<path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>',
-                status: gitData && gitData.length > 0 ? 'success' : 'pending',
-                statusText: gitData && gitData.length > 0 ? 'Committed' : 'No commits'
+                status: latestCommit ? 'success' : 'pending',
+                statusText: latestCommit ? 'Committed' : 'No commits',
+                time: latestCommit ? utils.formatDate(latestCommit.timestamp) : ''
             },
             {
-                name: 'GitHub Actions',
+                name: 'Push',
+                icon: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>',
+                status: latestCommit ? 'success' : 'pending',
+                statusText: latestCommit ? 'Pushed' : 'Waiting',
+                time: latestCommit ? utils.formatDate(latestCommit.timestamp) : ''
+            },
+            {
+                name: 'CI Trigger',
                 icon: '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
-                status: githubData?.latest_run ? 
-                    (githubData.latest_run.status === 'completed' ? 
-                        (githubData.latest_run.conclusion === 'success' ? 'success' : 'failure') 
-                        : 'running') 
-                    : 'pending',
-                statusText: githubData?.latest_run ? 
-                    (githubData.latest_run.status === 'completed' ? 
-                        (githubData.latest_run.conclusion === 'success' ? 'Passed' : 'Failed') 
-                        : 'Running') 
-                    : 'Waiting'
+                status: latestRun ? (latestRun.status === 'completed' ? 'success' : 'running') : 'pending',
+                statusText: latestRun ? (latestRun.status === 'completed' ? 'Triggered' : 'Running') : 'Waiting',
+                time: latestRun ? utils.formatDate(latestRun.created_at) : ''
+            },
+            {
+                name: 'Install Deps',
+                icon: '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>',
+                status: latestRun ? (latestRun.status === 'completed' ? 'success' : latestRun.status === 'in_progress' ? 'running' : 'pending') : 'pending',
+                statusText: latestRun ? (latestRun.status === 'completed' ? 'Installed' : latestRun.status === 'in_progress' ? 'Installing' : 'Waiting') : 'Waiting',
+                time: ''
+            },
+            {
+                name: 'Lint',
+                icon: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>',
+                status: latestRun ? (latestRun.status === 'completed' ? (latestRun.conclusion === 'success' ? 'success' : 'failure') : latestRun.status === 'in_progress' ? 'running' : 'pending') : 'pending',
+                statusText: latestRun ? (latestRun.status === 'completed' ? (latestRun.conclusion === 'success' ? 'Passed' : 'Failed') : 'Running') : 'Waiting',
+                time: ''
+            },
+            {
+                name: 'Unit Tests',
+                icon: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>',
+                status: latestRun ? (latestRun.status === 'completed' ? (latestRun.conclusion === 'success' ? 'success' : 'failure') : latestRun.status === 'in_progress' ? 'running' : 'pending') : 'pending',
+                statusText: latestRun ? (latestRun.status === 'completed' ? (latestRun.conclusion === 'success' ? 'Passed' : 'Failed') : 'Running') : 'Waiting',
+                time: ''
+            },
+            {
+                name: 'Integration Tests',
+                icon: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>',
+                status: latestRun ? (latestRun.status === 'completed' ? (latestRun.conclusion === 'success' ? 'success' : 'failure') : latestRun.status === 'in_progress' ? 'running' : 'pending') : 'pending',
+                statusText: latestRun ? (latestRun.status === 'completed' ? (latestRun.conclusion === 'success' ? 'Passed' : 'Failed') : 'Running') : 'Waiting',
+                time: ''
+            },
+            {
+                name: 'Build App',
+                icon: '<rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="15" x2="15" y2="15"/>',
+                status: latestRun ? (latestRun.status === 'completed' ? 'success' : latestRun.status === 'in_progress' ? 'running' : 'pending') : 'pending',
+                statusText: latestRun ? (latestRun.status === 'completed' ? 'Built' : 'Building') : 'Waiting',
+                time: ''
             },
             {
                 name: 'Docker Build',
                 icon: '<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>',
-                status: dockerData ? 'success' : 'pending',
-                statusText: dockerData ? 'Built' : 'Waiting'
+                status: dockerData ? 'success' : (latestRun && latestRun.status === 'completed' ? 'success' : 'pending'),
+                statusText: dockerData ? 'Built' : 'Waiting',
+                time: dockerData ? utils.formatDate(dockerData.created) : ''
             },
             {
-                name: 'Jenkins Validation',
-                icon: '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>',
-                status: jenkinsData?.latest_build ? 
-                    (jenkinsData.latest_build.status === 'SUCCESS' ? 'success' : 
-                        jenkinsData.latest_build.status === 'IN_PROGRESS' ? 'running' : 'failure') 
-                    : 'pending',
-                statusText: jenkinsData?.latest_build ? 
-                    (jenkinsData.latest_build.status === 'SUCCESS' ? 'Passed' : 
-                        jenkinsData.latest_build.status === 'IN_PROGRESS' ? 'Running' : 'Failed') 
-                    : 'Waiting'
-            },
-            {
-                name: 'Deployment',
+                name: 'Deploy',
                 icon: '<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>',
                 status: dockerData?.status === 'running' ? 'success' : 'pending',
-                statusText: dockerData?.status === 'running' ? 'Running' : 'Not deployed'
+                statusText: dockerData?.status === 'running' ? 'Running' : 'Not deployed',
+                time: dockerData?.status === 'running' ? utils.formatDate(dockerData.created) : ''
             }
         ];
 
-        const stagesHtml = stages.map((stage, index) => `
-            <div class="pipeline-stage">
-                ${index < stages.length - 1 ? `<div class="stage-connector ${stage.status === 'success' ? 'active' : ''}"></div>` : ''}
-                <div class="stage-icon-wrapper status-${stage.status}">
-                    <svg class="stage-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        ${stage.icon}
+        const html = steps.map(step => `
+            <div class="pipeline-step">
+                <div class="step-icon-wrapper status-${step.status}">
+                    <svg class="step-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        ${step.icon}
                     </svg>
                 </div>
-                <div class="stage-info">
-                    <div class="stage-name">${stage.name}</div>
-                    <span class="stage-status ${stage.status}">${stage.statusText}</span>
+                <div class="step-info">
+                    <div class="step-name">${step.name}</div>
+                    <span class="step-status ${step.status}">${step.statusText}</span>
+                    ${step.time ? `<div class="step-time">${step.time}</div>` : ''}
                 </div>
             </div>
         `).join('');
 
-        document.getElementById('pipelineStages').innerHTML = stagesHtml;
+        document.getElementById('pipelineFlow').innerHTML = html;
     },
 
-    pipelineSummary(gitData, githubData, dockerData) {
-        const summary = {
-            commits: gitData?.length || 0,
-            successRate: githubData?.success_rate ? Math.round(githubData.success_rate * 100) : 0,
-            uptime: dockerData?.status === 'running' ? '99.9%' : 'N/A',
-            deployments: dockerData ? 1 : 0
-        };
+    // Render rich engineering activity log
+    activityLog(gitData, githubData, dockerData) {
+        const activities = [];
 
-        const summaryHtml = `
-            <div class="summary-item">
-                <div class="summary-label">Total Commits</div>
-                <div class="summary-value">${summary.commits}</div>
-            </div>
-            <div class="summary-item">
-                <div class="summary-label">CI Success Rate</div>
-                <div class="summary-value">${summary.successRate}%</div>
-            </div>
-            <div class="summary-item">
-                <div class="summary-label">Service Uptime</div>
-                <div class="summary-value">${summary.uptime}</div>
-            </div>
-            <div class="summary-item">
-                <div class="summary-label">Active Deployments</div>
-                <div class="summary-value">${summary.deployments}</div>
-            </div>
-        `;
-
-        document.getElementById('pipelineSummary').innerHTML = summaryHtml;
-    },
-
-    activityTimeline(gitData, githubData, jenkinsData, dockerData) {
-        const events = [];
-
-        // Add git commits
+        // Add git commits with details
         if (gitData && gitData.length > 0) {
             gitData.slice(0, 5).forEach(commit => {
-                events.push({
+                activities.push({
+                    type: 'commit',
                     time: commit.timestamp,
-                    type: 'success',
                     title: 'Code Committed',
-                    description: utils.truncate(commit.message, 60),
+                    details: utils.truncate(commit.message, 80),
                     meta: [
                         { label: 'SHA', value: commit.short_hash },
                         { label: 'Author', value: commit.author },
@@ -243,436 +222,267 @@ const render = {
         // Add GitHub Actions runs
         if (githubData?.recent_runs) {
             githubData.recent_runs.slice(0, 3).forEach(run => {
-                events.push({
+                const status = run.status === 'completed' ? 
+                    (run.conclusion === 'success' ? 'success' : 'failure') : 'running';
+                
+                activities.push({
+                    type: 'ci',
                     time: run.updated_at,
-                    type: run.status === 'completed' ? 
-                        (run.conclusion === 'success' ? 'success' : 'failure') : 'running',
-                    title: run.status === 'completed' ? 'CI Pipeline Completed' : 'CI Pipeline Running',
-                    description: `${run.name} - ${run.conclusion || run.status}`,
+                    title: `CI Pipeline ${run.status === 'completed' ? 'Completed' : 'Running'}`,
+                    details: `${run.name} - ${run.conclusion || run.status}`,
                     meta: [
-                        { label: 'Workflow', value: run.name },
-                        { label: 'Status', value: run.conclusion || run.status }
+                        { label: 'Run ID', value: `#${run.id}` },
+                        { label: 'Status', value: run.conclusion || run.status },
+                        { label: 'Started', value: utils.formatDateTime(run.created_at) }
                     ]
                 });
             });
         }
 
-        // Add Jenkins builds
-        if (jenkinsData?.recent_builds) {
-            jenkinsData.recent_builds.slice(0, 3).forEach(build => {
-                events.push({
-                    time: build.timestamp,
-                    type: build.status === 'SUCCESS' ? 'success' : 
-                        build.status === 'IN_PROGRESS' ? 'running' : 'failure',
-                    title: 'Jenkins Validation',
-                    description: `Build #${build.number} - ${build.status}`,
-                    meta: [
-                        { label: 'Build', value: `#${build.number}` },
-                        { label: 'Status', value: build.status }
-                    ]
-                });
-            });
-        }
-
-        // Add Docker status
+        // Add Docker events
         if (dockerData) {
-            events.push({
+            activities.push({
+                type: 'docker',
                 time: dockerData.created,
-                type: dockerData.status === 'running' ? 'success' : 'failure',
-                title: 'Container Status',
-                description: `Container ${dockerData.name} is ${dockerData.status}`,
+                title: 'Docker Container Status',
+                details: `Container ${dockerData.name} is ${dockerData.status}`,
                 meta: [
                     { label: 'Image', value: dockerData.image },
-                    { label: 'Status', value: dockerData.status }
+                    { label: 'Status', value: dockerData.status },
+                    { label: 'Created', value: utils.formatDateTime(dockerData.created) }
                 ]
             });
         }
 
         // Sort by time (most recent first)
-        events.sort((a, b) => new Date(b.time) - new Date(a.time));
+        activities.sort((a, b) => new Date(b.time) - new Date(a.time));
 
-        // Update event count
-        document.getElementById('eventCount').textContent = `${events.length} events`;
+        // Update count
+        document.getElementById('eventCount').textContent = `${activities.length} events`;
 
-        // Render timeline
-        const timelineHtml = events.length > 0 ? events.map(event => `
-            <div class="timeline-event event-${event.type}">
-                <div class="event-time">${utils.formatDateTime(event.time)}</div>
-                <div class="event-title">${event.title}</div>
-                <div class="event-description">${event.description}</div>
-                <div class="event-meta">
-                    ${event.meta.map(m => `<span class="event-tag">${m.label}: ${m.value}</span>`).join('')}
+        // Render
+        const html = activities.length > 0 ? activities.map(activity => `
+            <div class="activity-item">
+                <div class="activity-header">
+                    <span class="activity-type ${activity.type}">${activity.type}</span>
+                    <span class="activity-time">${utils.formatDateTime(activity.time)}</span>
+                </div>
+                <div class="activity-title">${activity.title}</div>
+                <div class="activity-details">${activity.details}</div>
+                <div class="activity-meta">
+                    ${activity.meta.map(m => `<span class="meta-tag">${m.label}: ${m.value}</span>`).join('')}
                 </div>
             </div>
-        `).join('') : '<div class="empty-state"><div class="empty-state-text">No activity to display</div></div>';
+        `).join('') : '<div class="loading-state">No activity to display</div>';
 
-        document.getElementById('timelineContent').innerHTML = timelineHtml;
+        document.getElementById('activityLogContent').innerHTML = html;
     },
 
-    githubPanel(gitData, gitStats) {
-        if (!gitData || gitData.length === 0) {
-            document.getElementById('githubContent').innerHTML = `
-                <div class="empty-state">
-                    <div class="empty-state-text">No Git repository data available</div>
-                </div>
-            `;
+    // Render build status card
+    buildStatus(githubData) {
+        const latestRun = githubData?.latest_run;
+        
+        if (!latestRun) {
+            document.getElementById('buildStatusBadge').textContent = 'Unknown';
+            document.getElementById('buildStatusBadge').className = 'status-badge pending';
+            document.getElementById('buildStatusContent').innerHTML = '<div class="loading-state">No build data available</div>';
             return;
         }
 
-        const recentCommits = gitData.slice(0, 5);
-        const remoteUrl = gitStats?.remote_url || '';
-        const isGitHub = remoteUrl.includes('github.com');
+        const status = latestRun.status === 'completed' ? 
+            (latestRun.conclusion === 'success' ? 'success' : 'failure') : 'running';
+        
+        document.getElementById('buildStatusBadge').textContent = latestRun.conclusion || latestRun.status;
+        document.getElementById('buildStatusBadge').className = `status-badge ${status}`;
 
         const html = `
-            <div class="commit-list">
-                ${recentCommits.map(commit => `
-                    <div class="commit-item">
-                        <div class="commit-header">
-                            <div class="commit-message">${utils.truncate(commit.message, 50)}</div>
-                            <span class="commit-sha">${commit.short_hash}</span>
-                        </div>
-                        <div class="commit-meta">
-                            <span class="commit-author">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                                    <circle cx="12" cy="7" r="4"/>
-                                </svg>
-                                ${commit.author}
-                            </span>
-                            <span class="commit-time">${utils.formatDate(commit.timestamp)}</span>
-                            <span class="commit-branch">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <line x1="6" y1="3" x2="6" y2="15"/>
-                                    <circle cx="18" cy="6" r="3"/>
-                                    <circle cx="6" cy="18" r="3"/>
-                                    <path d="M18 9a9 9 0 0 1-9 9"/>
-                                </svg>
-                                ${commit.branch}
-                            </span>
-                        </div>
-                    </div>
-                `).join('')}
-            </div>
-            ${gitStats ? `
-                <div class="workflow-details" style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--color-border);">
-                    <div class="detail-item">
-                        <div class="detail-label">Total Commits</div>
-                        <div class="detail-value">${gitStats.total_commits}</div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-label">Contributors</div>
-                        <div class="detail-value">${gitStats.contributors}</div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-label">Current Branch</div>
-                        <div class="detail-value mono">${gitStats.current_branch}</div>
-                    </div>
-                    <div class="detail-item">
-                        <div class="detail-label">Total Branches</div>
-                        <div class="detail-value">${gitStats.branches.length}</div>
-                    </div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Workflow</div>
+                    <div class="info-value">${latestRun.name}</div>
                 </div>
-            ` : ''}
+                <div class="info-item">
+                    <div class="info-label">Run ID</div>
+                    <div class="info-value mono">#${latestRun.id}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Started</div>
+                    <div class="info-value">${utils.formatDateTime(latestRun.created_at)}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Updated</div>
+                    <div class="info-value">${utils.formatDateTime(latestRun.updated_at)}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Success Rate</div>
+                    <div class="info-value">${Math.round(githubData.success_rate * 100)}%</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Recent Runs</div>
+                    <div class="info-value">${githubData.recent_runs.length}</div>
+                </div>
+            </div>
         `;
 
-        document.getElementById('githubContent').innerHTML = html;
+        document.getElementById('buildStatusContent').innerHTML = html;
     },
 
-    cicdPanel(githubData, jenkinsData) {
-        let html = '';
-
-        // GitHub Actions Section
-        if (githubData?.latest_run) {
-            const run = githubData.latest_run;
-            const status = run.status === 'completed' ? 
-                (run.conclusion === 'success' ? 'success' : 'failure') : 'running';
-
-            html += `
-                <div class="workflow-status">
-                    <div class="workflow-header">
-                        <div class="workflow-name">GitHub Actions</div>
-                        <span class="workflow-badge ${status}">${run.conclusion || run.status}</span>
-                    </div>
-                    <div class="workflow-details">
-                        <div class="detail-item">
-                            <div class="detail-label">Workflow</div>
-                            <div class="detail-value">${run.name}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Run ID</div>
-                            <div class="detail-value mono">#${run.id}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Started</div>
-                            <div class="detail-value">${utils.formatDateTime(run.created_at)}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Updated</div>
-                            <div class="detail-value">${utils.formatDateTime(run.updated_at)}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Success Rate</div>
-                            <div class="detail-value">${Math.round(githubData.success_rate * 100)}%</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Recent Runs</div>
-                            <div class="detail-value">${githubData.recent_runs.length}</div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        // Jenkins Section
-        if (jenkinsData?.latest_build) {
-            const build = jenkinsData.latest_build;
-            const status = build.status === 'SUCCESS' ? 'success' : 
-                build.status === 'IN_PROGRESS' ? 'running' : 'failure';
-
-            html += `
-                <div class="workflow-status" style="margin-top: 1.5rem;">
-                    <div class="workflow-header">
-                        <div class="workflow-name">Jenkins Pipeline</div>
-                        <span class="workflow-badge ${status}">${build.status}</span>
-                    </div>
-                    <div class="workflow-details">
-                        <div class="detail-item">
-                            <div class="detail-label">Build Number</div>
-                            <div class="detail-value mono">#${build.number}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Duration</div>
-                            <div class="detail-value">${Math.round(build.duration / 1000)}s</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Started</div>
-                            <div class="detail-value">${utils.formatDateTime(build.timestamp)}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Success Rate</div>
-                            <div class="detail-value">${Math.round(jenkinsData.success_rate * 100)}%</div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        if (!html) {
-            html = '<div class="empty-state"><div class="empty-state-text">No CI/CD data available</div></div>';
-        }
-
-        document.getElementById('cicdContent').innerHTML = html;
-    },
-
-    dockerPanel(dockerData) {
+    // Render Docker card
+    dockerCard(dockerData, gitData) {
         if (!dockerData) {
-            document.getElementById('dockerContent').innerHTML = `
-                <div class="empty-state">
-                    <div class="empty-state-text">Docker container not found or Docker daemon not accessible</div>
-                </div>
+            document.getElementById('dockerCardContent').innerHTML = `
+                <div class="loading-state">Docker container not found or Docker daemon not accessible</div>
             `;
             return;
         }
 
-        const html = `
-            <div class="docker-info">
-                <div class="docker-section">
-                    <div class="docker-section-title">Container Packaging</div>
-                    <div class="docker-description">
-                        Docker packages the application with all dependencies into a reproducible, 
-                        portable container image. This ensures consistent behavior across development, 
-                        testing, and production environments.
-                    </div>
-                    <div class="docker-stats">
-                        <div class="detail-item">
-                            <div class="detail-label">Image</div>
-                            <div class="detail-value mono">${dockerData.image}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Container</div>
-                            <div class="detail-value mono">${dockerData.name}</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="docker-section">
-                    <div class="docker-section-title">Runtime Status</div>
-                    <div class="docker-description">
-                        The containerized application is currently ${dockerData.status}. 
-                        Docker provides isolation, resource management, and easy deployment 
-                        across different infrastructure platforms.
-                    </div>
-                    <div class="docker-stats">
-                        <div class="detail-item">
-                            <div class="detail-label">Status</div>
-                            <div class="detail-value">
-                                <span class="workflow-badge ${dockerData.status === 'running' ? 'success' : 'failure'}">
-                                    ${dockerData.status.toUpperCase()}
-                                </span>
-                            </div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Health</div>
-                            <div class="detail-value">${dockerData.health || 'N/A'}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Created</div>
-                            <div class="detail-value">${utils.formatDateTime(dockerData.created)}</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Ports</div>
-                            <div class="detail-value mono">${Object.entries(dockerData.ports).map(([k, v]) => `${k}→${v}`).join(', ') || 'None'}</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="docker-section">
-                    <div class="docker-section-title">Deployment Benefits</div>
-                    <div class="docker-description">
-                        • <strong>Reproducibility:</strong> Same image runs identically everywhere<br>
-                        • <strong>Isolation:</strong> Application dependencies don't conflict with host<br>
-                        • <strong>Scalability:</strong> Easy to replicate and scale horizontally<br>
-                        • <strong>Version Control:</strong> Image tags enable rollback and versioning
-                    </div>
-                </div>
-            </div>
-        `;
-
-        document.getElementById('dockerContent').innerHTML = html;
-    },
-
-    deploymentPanel(dockerData, gitData) {
-        const isDeployed = dockerData?.status === 'running';
         const latestCommit = gitData && gitData.length > 0 ? gitData[0] : null;
 
         const html = `
-            <div class="deployment-info">
-                <div class="deployment-status-card ${!isDeployed ? 'error' : ''}">
-                    <div class="deployment-header">
-                        <div class="deployment-title">Service Status</div>
-                        <span class="workflow-badge ${isDeployed ? 'success' : 'failure'}">
-                            ${isDeployed ? 'RUNNING' : 'STOPPED'}
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Image</div>
+                    <div class="info-value mono">${dockerData.image}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Container</div>
+                    <div class="info-value mono">${dockerData.name}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Status</div>
+                    <div class="info-value">
+                        <span class="status-badge ${dockerData.status === 'running' ? 'success' : 'failure'}">
+                            ${dockerData.status.toUpperCase()}
                         </span>
                     </div>
-                    <div class="deployment-stats">
-                        <div class="detail-item">
-                            <div class="detail-label">Environment</div>
-                            <div class="detail-value">Production</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Service</div>
-                            <div class="detail-value">ECU Log Visualizer</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Endpoint</div>
-                            <div class="detail-value mono">http://localhost:8000</div>
-                        </div>
-                        <div class="detail-item">
-                            <div class="detail-label">Health Check</div>
-                            <div class="detail-value">/health</div>
-                        </div>
-                    </div>
                 </div>
-
+                <div class="info-item">
+                    <div class="info-label">Created</div>
+                    <div class="info-value">${utils.formatDateTime(dockerData.created)}</div>
+                </div>
                 ${latestCommit ? `
-                    <div class="docker-section">
-                        <div class="docker-section-title">Deployed Version</div>
-                        <div class="docker-stats">
-                            <div class="detail-item">
-                                <div class="detail-label">Commit SHA</div>
-                                <div class="detail-value mono">${latestCommit.short_hash}</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Branch</div>
-                                <div class="detail-value mono">${latestCommit.branch}</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Author</div>
-                                <div class="detail-value">${latestCommit.author}</div>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-label">Deployed</div>
-                                <div class="detail-value">${utils.formatDateTime(latestCommit.timestamp)}</div>
-                            </div>
-                        </div>
-                        <div class="docker-description" style="margin-top: 1rem;">
-                            ${utils.truncate(latestCommit.message, 100)}
-                        </div>
-                    </div>
-                ` : ''}
-
-                <div class="docker-section">
-                    <div class="docker-section-title">Deployment Pipeline</div>
-                    <div class="docker-description">
-                        The complete DevOps pipeline ensures code quality and reliability:<br><br>
-                        <strong>1. Developer Commit:</strong> Code changes pushed to GitHub<br>
-                        <strong>2. GitHub Actions CI:</strong> Automated tests and quality checks<br>
-                        <strong>3. Docker Build:</strong> Application packaged into container image<br>
-                        <strong>4. Jenkins Validation:</strong> Integration tests and security scans<br>
-                        <strong>5. Deployment:</strong> Container deployed to production environment
-                    </div>
+                <div class="info-item">
+                    <div class="info-label">Built from Commit</div>
+                    <div class="info-value mono">${latestCommit.short_hash}</div>
                 </div>
+                ` : ''}
+                <div class="info-item">
+                    <div class="info-label">Ports</div>
+                    <div class="info-value mono">${Object.entries(dockerData.ports).map(([k, v]) => `${k}→${v}`).join(', ') || 'None'}</div>
+                </div>
+            </div>
+            <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--color-border); font-size: 0.8125rem; color: var(--color-text-secondary);">
+                <strong>Why Docker?</strong> Ensures reproducibility, isolation, and portability. This container can run identically on any platform.
             </div>
         `;
 
-        document.getElementById('deploymentContent').innerHTML = html;
+        document.getElementById('dockerCardContent').innerHTML = html;
+    },
+
+    // Render deployment card
+    deploymentCard(dockerData, gitData) {
+        const isDeployed = dockerData?.status === 'running';
+        const latestCommit = gitData && gitData.length > 0 ? gitData[0] : null;
+
+        document.getElementById('deploymentStatusBadge').textContent = isDeployed ? 'Running' : 'Stopped';
+        document.getElementById('deploymentStatusBadge').className = `status-badge ${isDeployed ? 'success' : 'failure'}`;
+
+        const html = `
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Environment</div>
+                    <div class="info-value">Production</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Service</div>
+                    <div class="info-value">ECU Log Visualizer</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Endpoint</div>
+                    <div class="info-value mono">http://localhost:8000</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Health Check</div>
+                    <div class="info-value">/health</div>
+                </div>
+                ${latestCommit ? `
+                <div class="info-item">
+                    <div class="info-label">Deployed Version</div>
+                    <div class="info-value mono">${latestCommit.short_hash}</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Deployed</div>
+                    <div class="info-value">${utils.formatDateTime(latestCommit.timestamp)}</div>
+                </div>
+                ` : ''}
+            </div>
+        `;
+
+        document.getElementById('deploymentCardContent').innerHTML = html;
+    },
+
+    // Render repository stats
+    repoStats(gitStats) {
+        if (!gitStats) {
+            document.getElementById('repoStatsGrid').innerHTML = '<div class="loading-state">No repository data available</div>';
+            return;
+        }
+
+        const html = `
+            <div class="stat-item">
+                <div class="stat-label">Total Commits</div>
+                <div class="stat-value">${gitStats.total_commits}</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Contributors</div>
+                <div class="stat-value">${gitStats.contributors}</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Branches</div>
+                <div class="stat-value">${gitStats.branches.length}</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Current Branch</div>
+                <div class="stat-value">${gitStats.current_branch}</div>
+            </div>
+        `;
+
+        document.getElementById('repoStatsGrid').innerHTML = html;
     }
 };
 
-// Main Dashboard Controller
+// Dashboard Controller
 const dashboard = {
     async loadAllData() {
         try {
-            // Show loading state
-            this.showLoading();
-
             // Fetch all data in parallel
-            const [gitCommits, gitStats, githubStatus, jenkinsStatus, dockerStatus] = await Promise.all([
+            const [gitCommits, gitStats, githubStatus, dockerStatus] = await Promise.all([
                 api.fetchGitCommits(),
                 api.fetchGitStats(),
                 api.fetchGitHubStatus(),
-                api.fetchJenkinsStatus(),
                 api.fetchDockerStatus()
             ]);
 
             // Update state
             state.gitData = gitCommits;
             state.githubData = githubStatus;
-            state.jenkinsData = jenkinsStatus;
             state.dockerData = dockerStatus;
             state.lastUpdate = new Date();
 
             // Render all components
-            render.pipelineStages(gitCommits, githubStatus, dockerStatus, jenkinsStatus);
-            render.pipelineSummary(gitCommits, githubStatus, dockerStatus);
-            render.activityTimeline(gitCommits, githubStatus, jenkinsStatus, dockerStatus);
-            render.githubPanel(gitCommits, gitStats);
-            render.cicdPanel(githubStatus, jenkinsStatus);
-            render.dockerPanel(dockerStatus);
-            render.deploymentPanel(dockerStatus, gitCommits);
+            render.pipelineFlow(gitCommits, githubStatus, dockerStatus);
+            render.activityLog(gitCommits, githubStatus, dockerStatus);
+            render.buildStatus(githubStatus);
+            render.dockerCard(dockerStatus, gitCommits);
+            render.deploymentCard(dockerStatus, gitCommits);
+            render.repoStats(gitStats);
 
             // Update last update time
             this.updateLastUpdateTime();
 
         } catch (error) {
             console.error('Failed to load dashboard data:', error);
-            this.showError();
         }
-    },
-
-    showLoading() {
-        const loadingHtml = '<div class="loading-state">Loading...</div>';
-        document.getElementById('pipelineStages').innerHTML = loadingHtml;
-        document.getElementById('timelineContent').innerHTML = loadingHtml;
-        document.getElementById('githubContent').innerHTML = loadingHtml;
-        document.getElementById('cicdContent').innerHTML = loadingHtml;
-        document.getElementById('dockerContent').innerHTML = loadingHtml;
-        document.getElementById('deploymentContent').innerHTML = loadingHtml;
-    },
-
-    showError() {
-        const errorHtml = '<div class="empty-state"><div class="empty-state-text">Failed to load data. Please try again.</div></div>';
-        document.getElementById('timelineContent').innerHTML = errorHtml;
     },
 
     updateLastUpdateTime() {
@@ -687,12 +497,10 @@ const dashboard = {
     },
 
     startAutoRefresh() {
-        // Clear existing timer
         if (state.refreshTimer) {
             clearInterval(state.refreshTimer);
         }
 
-        // Set up new timer
         state.refreshTimer = setInterval(() => {
             this.loadAllData();
         }, CONFIG.refreshInterval);
@@ -708,7 +516,6 @@ const dashboard = {
 
 // Event Handlers
 function setupEventHandlers() {
-    // Refresh button
     const refreshButton = document.getElementById('refreshButton');
     if (refreshButton) {
         refreshButton.addEventListener('click', () => {
@@ -716,7 +523,6 @@ function setupEventHandlers() {
         });
     }
 
-    // Handle visibility change to pause/resume auto-refresh
     document.addEventListener('visibilitychange', () => {
         if (document.hidden) {
             dashboard.stopAutoRefresh();
@@ -727,19 +533,12 @@ function setupEventHandlers() {
     });
 }
 
-// Initialize Dashboard
+// Initialize
 function init() {
     console.log('Initializing DevOps Pipeline Dashboard V3...');
-    
-    // Setup event handlers
     setupEventHandlers();
-    
-    // Load initial data
     dashboard.loadAllData();
-    
-    // Start auto-refresh
     dashboard.startAutoRefresh();
-    
     console.log('Dashboard initialized successfully');
 }
 
