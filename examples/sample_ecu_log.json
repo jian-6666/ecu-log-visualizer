@@ -1,0 +1,122 @@
+[
+  {
+    "timestamp": "2024-01-01T08:00:00",
+    "sensors": {
+      "engine_temp": 85.2,
+      "oil_pressure": 45.3,
+      "rpm": 800,
+      "throttle_position": 0.0,
+      "battery_voltage": 12.6,
+      "coolant_temp": 82.1
+    },
+    "status": "OK"
+  },
+  {
+    "timestamp": "2024-01-01T08:00:01",
+    "sensors": {
+      "engine_temp": 85.4,
+      "oil_pressure": 45.5,
+      "rpm": 820,
+      "throttle_position": 2.5,
+      "battery_voltage": 12.6,
+      "coolant_temp": 82.3
+    },
+    "status": "OK"
+  },
+  {
+    "timestamp": "2024-01-01T08:00:02",
+    "sensors": {
+      "engine_temp": 85.6,
+      "oil_pressure": 45.7,
+      "rpm": 850,
+      "throttle_position": 5.0,
+      "battery_voltage": 12.5,
+      "coolant_temp": 82.5
+    },
+    "status": "OK"
+  },
+  {
+    "timestamp": "2024-01-01T08:00:03",
+    "sensors": {
+      "engine_temp": 85.9,
+      "oil_pressure": 46.0,
+      "rpm": 900,
+      "throttle_position": 8.5,
+      "battery_voltage": 12.5,
+      "coolant_temp": 82.8
+    },
+    "status": "OK"
+  },
+  {
+    "timestamp": "2024-01-01T08:00:04",
+    "sensors": {
+      "engine_temp": 86.2,
+      "oil_pressure": 46.3,
+      "rpm": 950,
+      "throttle_position": 12.0,
+      "battery_voltage": 12.5,
+      "coolant_temp": 83.1
+    },
+    "status": "OK"
+  },
+  {
+    "timestamp": "2024-01-01T08:00:05",
+    "sensors": {
+      "engine_temp": 86.6,
+      "oil_pressure": 46.7,
+      "rpm": 1000,
+      "throttle_position": 15.5,
+      "battery_voltage": 12.4,
+      "coolant_temp": 83.5
+    },
+    "status": "OK"
+  },
+  {
+    "timestamp": "2024-01-01T08:00:06",
+    "sensors": {
+      "engine_temp": 87.0,
+      "oil_pressure": 47.1,
+      "rpm": 1100,
+      "throttle_position": 20.0,
+      "battery_voltage": 12.4,
+      "coolant_temp": 84.0
+    },
+    "status": "OK"
+  },
+  {
+    "timestamp": "2024-01-01T08:00:07",
+    "sensors": {
+      "engine_temp": 87.5,
+      "oil_pressure": 47.6,
+      "rpm": 1200,
+      "throttle_position": 25.0,
+      "battery_voltage": 12.4,
+      "coolant_temp": 84.5
+    },
+    "status": "OK"
+  },
+  {
+    "timestamp": "2024-01-01T08:00:08",
+    "sensors": {
+      "engine_temp": 88.1,
+      "oil_pressure": 48.2,
+      "rpm": 1350,
+      "throttle_position": 30.5,
+      "battery_voltage": 12.3,
+      "coolant_temp": 85.2
+    },
+    "status": "OK"
+  },
+  {
+    "timestamp": "2024-01-01T08:00:09",
+    "sensors": {
+      "engine_temp": 88.7,
+      "oil_pressure": 48.8,
+      "rpm": 1500,
+      "throttle_position": 36.0,
+      "battery_voltage": 12.3,
+      "coolant_temp": 85.9
+    },
+    "status": "OK"
+  }
+]

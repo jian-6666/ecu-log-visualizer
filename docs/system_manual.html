@@ -1,0 +1,2859 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>system_manual.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="ecu-log-visualizer---%E6%8A%80%E6%9C%AF%E8%AF%B4%E6%98%8E%E4%B8%8E%E6%93%8D%E4%BD%9C%E6%89%8B%E5%86%8C">ECU Log Visualizer - 技术说明与操作手册</h1>
+<p><strong>版本</strong>: 1.0.0<br>
+<strong>最后更新</strong>: 2026-03-04<br>
+<strong>文档状态</strong>: 正式版</p>
+<hr>
+<h2 id="%E7%9B%AE%E5%BD%95">目录</h2>
+<ol>
+<li><a href="#1-%E9%A1%B9%E7%9B%AE%E6%A6%82%E8%A7%88-project-overview">项目概览</a></li>
+<li><a href="#2-%E6%8A%80%E6%9C%AF%E4%BA%AE%E7%82%B9-engineering-highlights">技术亮点</a></li>
+<li><a href="#3-%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84-system-architecture">系统架构</a></li>
+<li><a href="#4-%E5%B7%A5%E7%A8%8B%E6%9E%B6%E6%9E%84-software-engineering-pipeline">工程架构</a></li>
+<li><a href="#5-%E9%A1%B9%E7%9B%AE%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84-project-structure">项目目录结构</a></li>
+<li><a href="#6-%E5%AE%89%E8%A3%85%E4%B8%8E%E8%BF%90%E8%A1%8C%E6%8C%87%E5%8D%97-quick-start">安装与运行指南</a></li>
+<li><a href="#7-docker-%E8%BF%90%E8%A1%8C%E6%96%B9%E5%BC%8F">Docker 运行方式</a></li>
+<li><a href="#8-cicd-%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B">CI/CD 工作流程</a></li>
+<li><a href="#9-engineering-dashboard">Engineering Dashboard</a></li>
+<li><a href="#10-%E6%93%8D%E4%BD%9C%E6%B5%81%E7%A8%8B-operation-guide">操作流程</a></li>
+<li><a href="#11-%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86%E8%AF%B4%E6%98%8E-for-interns--learning">系统原理说明</a></li>
+<li><a href="#12-%E7%B3%BB%E7%BB%9F%E5%A4%8D%E7%8E%B0%E6%8C%87%E5%8D%97-reproduction-guide">系统复现指南</a></li>
+<li><a href="#13-%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5-troubleshooting">故障排查</a></li>
+<li><a href="#14-%E6%9C%AA%E6%9D%A5%E6%89%A9%E5%B1%95-future-improvements">未来扩展</a></li>
+</ol>
+<hr>
+<h2 id="1-%E9%A1%B9%E7%9B%AE%E6%A6%82%E8%A7%88-project-overview">1. 项目概览 (Project Overview)</h2>
+<h3 id="11-%E7%B3%BB%E7%BB%9F%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98">1.1 系统解决什么问题</h3>
+<p>在汽车电子系统开发中，电子控制单元（ECU）会产生大量的运行日志数据。这些日志包含传感器读数、状态信息和时间戳。工程师需要：</p>
+<ul>
+<li><strong>快速分析</strong>大量日志数据</li>
+<li><strong>可视化</strong>传感器数据趋势</li>
+<li><strong>识别异常</strong>读数和故障模式</li>
+<li><strong>导出数据</strong>用于进一步分析</li>
+</ul>
+<p>传统方式需要手动打开日志文件、使用 Excel 处理数据、绘制图表，效率低下且容易出错。</p>
+<p><strong>ECU Log Visualizer 提供了一站式解决方案</strong>：</p>
+<ul>
+<li>上传日志文件（CSV 或 JSON 格式）</li>
+<li>自动解析和统计分析</li>
+<li>生成交互式可视化图表</li>
+<li>支持数据过滤和导出</li>
+</ul>
+<h3 id="12-%E7%B3%BB%E7%BB%9F%E4%B8%BB%E8%A6%81%E5%8A%9F%E8%83%BD">1.2 系统主要功能</h3>
+<table>
+<thead>
+<tr>
+<th>功能模块</th>
+<th>说明</th>
+<th>用户价值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>文件上传</strong></td>
+<td>支持 CSV 和 JSON 格式日志</td>
+<td>灵活支持不同数据源</td>
+</tr>
+<tr>
+<td><strong>数据解析</strong></td>
+<td>自动提取时间戳和传感器数据</td>
+<td>无需手动处理数据</td>
+</tr>
+<tr>
+<td><strong>统计分析</strong></td>
+<td>计算最小值、最大值、平均值、标准差</td>
+<td>快速了解数据特征</td>
+</tr>
+<tr>
+<td><strong>可视化</strong></td>
+<td>交互式折线图，支持缩放和平移</td>
+<td>直观观察数据趋势</td>
+</tr>
+<tr>
+<td><strong>数据过滤</strong></td>
+<td>按时间范围和传感器类型过滤</td>
+<td>聚焦关注的数据</td>
+</tr>
+<tr>
+<td><strong>数据导出</strong></td>
+<td>导出过滤后的数据为 CSV/JSON</td>
+<td>支持二次分析</td>
+</tr>
+</tbody>
+</table>
+<h3 id="13-%E7%B3%BB%E7%BB%9F%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF">1.3 系统应用场景</h3>
+<p><strong>场景 1：日常测试分析</strong></p>
+<ul>
+<li>测试工程师上传测试日志</li>
+<li>查看传感器读数是否在正常范围</li>
+<li>导出异常数据段用于报告</li>
+</ul>
+<p><strong>场景 2：故障诊断</strong></p>
+<ul>
+<li>客户反馈车辆异常</li>
+<li>上传故障时的 ECU 日志</li>
+<li>通过可视化快速定位异常时间点</li>
+<li>分析相关传感器数据</li>
+</ul>
+<p><strong>场景 3：性能优化</strong></p>
+<ul>
+<li>对比不同版本软件的 ECU 日志</li>
+<li>分析性能指标变化</li>
+<li>验证优化效果</li>
+</ul>
+<p><strong>场景 4：团队协作</strong></p>
+<ul>
+<li>工程师上传日志并分享文件 ID</li>
+<li>团队成员查看相同数据</li>
+<li>统一分析标准</li>
+</ul>
+<hr>
+<h2 id="2-%E6%8A%80%E6%9C%AF%E4%BA%AE%E7%82%B9-engineering-highlights">2. 技术亮点 (Engineering Highlights)</h2>
+<p>本系统不仅是一个功能性应用，更是一个<strong>现代软件工程实践的示范项目</strong>。</p>
+<h3 id="21-git-%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6">2.1 Git 版本控制</h3>
+<p><strong>解决什么问题</strong>：</p>
+<ul>
+<li>代码变更追踪</li>
+<li>团队协作开发</li>
+<li>版本回退能力</li>
+</ul>
+<p><strong>在系统中的作用</strong>：</p>
+<ul>
+<li>所有代码通过 Git 管理</li>
+<li>清晰的提交历史</li>
+<li>支持多人协作开发</li>
+</ul>
+<p><strong>技术价值</strong>：</p>
+<ul>
+<li>代码可追溯性</li>
+<li>变更审计能力</li>
+<li>团队协作基础</li>
+</ul>
+<h3 id="22-github-%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93">2.2 GitHub 远程仓库</h3>
+<p><strong>解决什么问题</strong>：</p>
+<ul>
+<li>代码集中托管</li>
+<li>远程备份</li>
+<li>团队协作平台</li>
+</ul>
+<p><strong>在系统中的作用</strong>：</p>
+<ul>
+<li>代码托管在 GitHub</li>
+<li>支持 Pull Request 代码审查</li>
+<li>触发自动化 CI/CD 流程</li>
+</ul>
+<p><strong>技术价值</strong>：</p>
+<ul>
+<li>代码安全备份</li>
+<li>协作开发平台</li>
+<li>开源社区支持</li>
+</ul>
+<h3 id="23-cicd-%E8%87%AA%E5%8A%A8%E5%8C%96-github-actions">2.3 CI/CD 自动化 (GitHub Actions)</h3>
+<p><strong>解决什么问题</strong>：</p>
+<ul>
+<li>手动测试耗时</li>
+<li>人为错误风险</li>
+<li>部署流程不一致</li>
+</ul>
+<p><strong>在系统中的作用</strong>：</p>
+<ul>
+<li>每次代码提交自动运行测试</li>
+<li>自动检查代码质量</li>
+<li>自动构建 Docker 镜像</li>
+</ul>
+<p><strong>技术价值</strong>：</p>
+<ul>
+<li>提前发现问题</li>
+<li>保证代码质量</li>
+<li>加快交付速度</li>
+</ul>
+<p><strong>工作流程</strong>：</p>
+<pre class="hljs"><code><div>代码提交 → 自动触发 CI → 安装依赖 → 代码检查 → 运行测试 → 构建验证
+</div></code></pre>
+<h3 id="24-docker-%E5%AE%B9%E5%99%A8%E5%8C%96">2.4 Docker 容器化</h3>
+<p><strong>解决什么问题</strong>：</p>
+<ul>
+<li>&quot;在我机器上能运行&quot;问题</li>
+<li>环境配置复杂</li>
+<li>部署不一致</li>
+</ul>
+<p><strong>在系统中的作用</strong>：</p>
+<ul>
+<li>应用打包为 Docker 镜像</li>
+<li>一次构建，到处运行</li>
+<li>隔离的运行环境</li>
+</ul>
+<p><strong>技术价值</strong>：</p>
+<ul>
+<li>环境一致性</li>
+<li>快速部署</li>
+<li>资源隔离</li>
+</ul>
+<h3 id="25-jenkins-pipeline">2.5 Jenkins Pipeline</h3>
+<p><strong>解决什么问题</strong>：</p>
+<ul>
+<li>企业级 CI/CD 需求</li>
+<li>复杂构建流程管理</li>
+<li>多环境部署</li>
+</ul>
+<p><strong>在系统中的作用</strong>：</p>
+<ul>
+<li>提供 Jenkinsfile 配置</li>
+<li>支持企业 Jenkins 环境</li>
+<li>多阶段构建流程</li>
+</ul>
+<p><strong>技术价值</strong>：</p>
+<ul>
+<li>企业级 CI/CD 支持</li>
+<li>灵活的流程定义</li>
+<li>可视化构建过程</li>
+</ul>
+<h3 id="26-%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95">2.6 自动化测试</h3>
+<p><strong>解决什么问题</strong>：</p>
+<ul>
+<li>手动测试覆盖不全</li>
+<li>回归测试耗时</li>
+<li>代码质量难以保证</li>
+</ul>
+<p><strong>在系统中的作用</strong>：</p>
+<ul>
+<li>单元测试：测试独立模块</li>
+<li>集成测试：测试 API 端点</li>
+<li>属性测试：测试通用属性</li>
+</ul>
+<p><strong>技术价值</strong>：</p>
+<ul>
+<li>代码质量保证</li>
+<li>快速发现问题</li>
+<li>支持重构</li>
+</ul>
+<p><strong>测试覆盖</strong>：</p>
+<ul>
+<li>文件处理模块</li>
+<li>数据解析模块</li>
+<li>统计计算模块</li>
+<li>API 端点</li>
+<li>前端功能</li>
+</ul>
+<h3 id="27-%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96">2.7 数据可视化</h3>
+<p><strong>解决什么问题</strong>：</p>
+<ul>
+<li>数据难以理解</li>
+<li>趋势不明显</li>
+<li>异常难以发现</li>
+</ul>
+<p><strong>在系统中的作用</strong>：</p>
+<ul>
+<li>使用 Plotly 生成交互式图表</li>
+<li>支持多传感器叠加显示</li>
+<li>支持缩放、平移、悬停查看</li>
+</ul>
+<p><strong>技术价值</strong>：</p>
+<ul>
+<li>直观的数据展示</li>
+<li>交互式探索</li>
+<li>专业级可视化</li>
+</ul>
+<h3 id="28-%E5%B7%A5%E7%A8%8B%E5%8F%AF%E8%A7%86%E5%8C%96%E7%B3%BB%E7%BB%9F-engineering-dashboard">2.8 工程可视化系统 (Engineering Dashboard)</h3>
+<p><strong>解决什么问题</strong>：</p>
+<ul>
+<li>工程流程不透明</li>
+<li>管理层难以理解技术工作</li>
+<li>团队状态不可见</li>
+</ul>
+<p><strong>在系统中的作用</strong>：</p>
+<ul>
+<li>展示 Git 提交历史</li>
+<li>展示 CI/CD 运行状态</li>
+<li>展示 Docker 容器状态</li>
+<li>展示测试结果</li>
+</ul>
+<p><strong>技术价值</strong>：</p>
+<ul>
+<li>工程透明化</li>
+<li>管理可视化</li>
+<li>团队协作增强</li>
+</ul>
+<hr>
+<h2 id="3-%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84-system-architecture">3. 系统架构 (System Architecture)</h2>
+<h3 id="31-%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84">3.1 整体架构</h3>
+<p>ECU Log Visualizer 采用<strong>前后端分离架构</strong>，由以下层次组成：</p>
+<pre><code class="language-mermaid"><div class="mermaid">graph TB
+    subgraph "前端层 Frontend"
+        UI[Web UI<br/>HTML + JavaScript]
+        Dashboard[Engineering Dashboard<br/>工程可视化]
+    end
+    
+    subgraph "API 层 API Layer"
+        API[FastAPI Application<br/>RESTful API]
+    end
+    
+    subgraph "业务逻辑层 Business Logic"
+        FileHandler[File Handler<br/>文件处理]
+        DataAnalyzer[Data Analyzer<br/>数据分析]
+        VisEngine[Visualization Engine<br/>可视化引擎]
+        GitIntegration[Git Integration<br/>Git 集成]
+        CICDMonitor[CI/CD Monitor<br/>CI/CD 监控]
+        DockerMonitor[Docker Monitor<br/>Docker 监控]
+    end
+    
+    subgraph "存储层 Storage"
+        FileStore[File Storage<br/>文件存储]
+        GitRepo[Git Repository<br/>代码仓库]
+    end
+    
+    UI -->|HTTP Requests| API
+    Dashboard -->|HTTP Requests| API
+    API --> FileHandler
+    API --> DataAnalyzer
+    API --> VisEngine
+    API --> GitIntegration
+    API --> CICDMonitor
+    API --> DockerMonitor
+    FileHandler --> FileStore
+    DataAnalyzer --> FileStore
+    GitIntegration --> GitRepo
+</div></code></pre>
+<h3 id="32-%E6%A0%B8%E5%BF%83%E6%A8%A1%E5%9D%97%E8%AF%B4%E6%98%8E">3.2 核心模块说明</h3>
+<h4 id="321-%E6%96%87%E4%BB%B6%E5%A4%84%E7%90%86%E6%A8%A1%E5%9D%97-file-handler">3.2.1 文件处理模块 (File Handler)</h4>
+<p><strong>职责</strong>：</p>
+<ul>
+<li>验证上传文件格式（CSV/JSON）</li>
+<li>检查文件大小（最大 50MB）</li>
+<li>生成唯一文件标识符（UUID）</li>
+<li>保存文件到 uploads/ 目录</li>
+</ul>
+<p><strong>关键方法</strong>：</p>
+<pre class="hljs"><code><div>validate_file(file)  <span class="hljs-comment"># 验证文件</span>
+save_file(file)      <span class="hljs-comment"># 保存文件</span>
+get_file_path(id)    <span class="hljs-comment"># 获取文件路径</span>
+delete_file(id)      <span class="hljs-comment"># 删除文件</span>
+</div></code></pre>
+<p><strong>数据流</strong>：</p>
+<pre class="hljs"><code><div>用户上传 → 格式验证 → 大小检查 → 生成 UUID → 保存文件 → 返回文件 ID
+</div></code></pre>
+<h4 id="322-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E6%A8%A1%E5%9D%97-data-analyzer">3.2.2 数据分析模块 (Data Analyzer)</h4>
+<p><strong>职责</strong>：</p>
+<ul>
+<li>解析 CSV 和 JSON 格式日志</li>
+<li>提取时间戳和传感器数据</li>
+<li>数据验证和清洗</li>
+<li>计算统计信息（min, max, mean, std）</li>
+<li>数据过滤（时间范围、传感器）</li>
+</ul>
+<p><strong>关键方法</strong>：</p>
+<pre class="hljs"><code><div>parse_file(path)              <span class="hljs-comment"># 解析文件</span>
+parse_csv(path)               <span class="hljs-comment"># 解析 CSV</span>
+parse_json(path)              <span class="hljs-comment"># 解析 JSON</span>
+validate_data(df)             <span class="hljs-comment"># 验证数据</span>
+calculate_statistics(df)      <span class="hljs-comment"># 计算统计</span>
+filter_data(df, filters)      <span class="hljs-comment"># 过滤数据</span>
+get_sensor_names(df)          <span class="hljs-comment"># 获取传感器列表</span>
+</div></code></pre>
+<p><strong>数据流</strong>：</p>
+<pre class="hljs"><code><div>文件路径 → 格式识别 → 解析数据 → 验证清洗 → 统计计算 → 返回结果
+</div></code></pre>
+<h4 id="323-%E5%8F%AF%E8%A7%86%E5%8C%96%E5%BC%95%E6%93%8E-visualization-engine">3.2.3 可视化引擎 (Visualization Engine)</h4>
+<p><strong>职责</strong>：</p>
+<ul>
+<li>生成 Plotly 格式图表配置</li>
+<li>支持时间序列折线图</li>
+<li>支持多传感器叠加显示</li>
+<li>配置交互功能（缩放、平移、悬停）</li>
+</ul>
+<p><strong>关键方法</strong>：</p>
+<pre class="hljs"><code><div>create_time_series_chart(df, sensors)  <span class="hljs-comment"># 创建时间序列图</span>
+_create_trace(df, sensor)              <span class="hljs-comment"># 创建单个传感器轨迹</span>
+</div></code></pre>
+<p><strong>数据流</strong>：</p>
+<pre class="hljs"><code><div>DataFrame → 选择传感器 → 生成 traces → 配置 layout → 返回 Plotly JSON
+</div></code></pre>
+<h4 id="324-api-%E5%B1%82-fastapi-application">3.2.4 API 层 (FastAPI Application)</h4>
+<p><strong>职责</strong>：</p>
+<ul>
+<li>提供 RESTful API 端点</li>
+<li>请求验证和参数解析</li>
+<li>错误处理和响应格式化</li>
+<li>自动生成 API 文档</li>
+</ul>
+<p><strong>核心端点</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>端点</th>
+<th>方法</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/api/upload</code></td>
+<td>POST</td>
+<td>上传日志文件</td>
+</tr>
+<tr>
+<td><code>/api/stats/{file_id}</code></td>
+<td>GET</td>
+<td>获取统计信息</td>
+</tr>
+<tr>
+<td><code>/api/chart/{file_id}</code></td>
+<td>GET</td>
+<td>获取图表数据</td>
+</tr>
+<tr>
+<td><code>/api/export/{file_id}</code></td>
+<td>GET</td>
+<td>导出数据</td>
+</tr>
+<tr>
+<td><code>/api/files</code></td>
+<td>GET</td>
+<td>获取文件列表</td>
+</tr>
+<tr>
+<td><code>/api/engineering/dashboard</code></td>
+<td>GET</td>
+<td>获取工程仪表板数据</td>
+</tr>
+</tbody>
+</table>
+<h3 id="33-%E6%95%B0%E6%8D%AE%E6%B5%81%E5%9B%BE">3.3 数据流图</h3>
+<h4 id="331-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%B5%81%E7%A8%8B">3.3.1 文件上传流程</h4>
+<pre><code class="language-mermaid"><div class="mermaid">sequenceDiagram
+    participant User as 用户
+    participant UI as 前端
+    participant API as API 层
+    participant FH as File Handler
+    participant FS as 文件存储
+    
+    User->>UI: 选择文件
+    UI->>API: POST /api/upload
+    API->>FH: validate_file()
+    FH-->>API: 验证结果
+    alt 验证失败
+        API-->>UI: 400 错误
+        UI-->>User: 显示错误
+    else 验证成功
+        API->>FH: save_file()
+        FH->>FS: 保存文件
+        FS-->>FH: 文件路径
+        FH-->>API: 文件 ID
+        API-->>UI: 200 + 文件元数据
+        UI-->>User: 显示成功
+    end
+</div></code></pre>
+<h4 id="332-%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E6%B5%81%E7%A8%8B">3.3.2 数据分析流程</h4>
+<pre><code class="language-mermaid"><div class="mermaid">sequenceDiagram
+    participant UI as 前端
+    participant API as API 层
+    participant DA as Data Analyzer
+    participant FS as 文件存储
+    
+    UI->>API: GET /api/stats/{file_id}
+    API->>FS: 获取文件路径
+    FS-->>API: 文件路径
+    API->>DA: parse_file(path)
+    DA->>DA: 识别格式
+    DA->>DA: 解析数据
+    DA->>DA: 验证清洗
+    DA-->>API: DataFrame
+    API->>DA: calculate_statistics(df)
+    DA-->>API: 统计结果
+    API-->>UI: 200 + 统计数据
+    UI->>UI: 渲染表格
+</div></code></pre>
+<h3 id="34-%E6%A8%A1%E5%9D%97%E9%97%B4%E9%80%9A%E4%BF%A1">3.4 模块间通信</h3>
+<p><strong>通信方式</strong>：</p>
+<ul>
+<li>前端 ↔ API：HTTP/HTTPS (RESTful)</li>
+<li>API ↔ 业务逻辑：Python 函数调用</li>
+<li>业务逻辑 ↔ 存储：文件系统 I/O</li>
+</ul>
+<p><strong>数据格式</strong>：</p>
+<ul>
+<li>API 请求/响应：JSON</li>
+<li>内部数据处理：Pandas DataFrame</li>
+<li>文件存储：CSV/JSON 原始格式</li>
+</ul>
+<hr>
+<h2 id="4-%E5%B7%A5%E7%A8%8B%E6%9E%B6%E6%9E%84-software-engineering-pipeline">4. 工程架构 (Software Engineering Pipeline)</h2>
+<h3 id="41-%E5%AE%8C%E6%95%B4%E5%B7%A5%E7%A8%8B%E6%B5%81%E7%A8%8B">4.1 完整工程流程</h3>
+<pre><code class="language-mermaid"><div class="mermaid">graph LR
+    A[Developer<br/>开发者] -->|1. 编写代码| B[Git Commit<br/>本地提交]
+    B -->|2. 推送代码| C[GitHub<br/>远程仓库]
+    C -->|3. 触发| D[CI Pipeline<br/>持续集成]
+    D -->|4. 执行| E[自动化测试<br/>Automated Tests]
+    E -->|5. 通过| F[Docker Build<br/>构建镜像]
+    F -->|6. 部署| G[Container<br/>运行容器]
+    G -->|7. 服务| H[Application<br/>应用运行]
+    H -->|8. 监控| I[Dashboard<br/>工程仪表板]
+    I -->|9. 反馈| A
+</div></code></pre>
+<h3 id="42-%E5%90%84%E7%8E%AF%E8%8A%82%E8%AF%A6%E7%BB%86%E8%AF%B4%E6%98%8E">4.2 各环节详细说明</h3>
+<h4 id="%E6%AD%A5%E9%AA%A4-1%E5%BC%80%E5%8F%91%E8%80%85%E7%BC%96%E5%86%99%E4%BB%A3%E7%A0%81">步骤 1：开发者编写代码</h4>
+<p><strong>做什么</strong>：</p>
+<ul>
+<li>开发新功能或修复 bug</li>
+<li>编写单元测试</li>
+<li>本地运行测试验证</li>
+</ul>
+<p><strong>为什么需要</strong>：</p>
+<ul>
+<li>功能开发的起点</li>
+<li>本地验证减少错误</li>
+</ul>
+<p><strong>工具</strong>：</p>
+<ul>
+<li>代码编辑器（VS Code, PyCharm）</li>
+<li>Python 3.9+</li>
+<li>Git</li>
+</ul>
+<h4 id="%E6%AD%A5%E9%AA%A4-2git-commit-%E6%9C%AC%E5%9C%B0%E6%8F%90%E4%BA%A4">步骤 2：Git Commit 本地提交</h4>
+<p><strong>做什么</strong>：</p>
+<ul>
+<li>使用 <code>git add</code> 暂存更改</li>
+<li>使用 <code>git commit</code> 提交更改</li>
+<li>编写清晰的提交信息</li>
+</ul>
+<p><strong>为什么需要</strong>：</p>
+<ul>
+<li>记录代码变更历史</li>
+<li>支持版本回退</li>
+<li>团队协作基础</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<pre class="hljs"><code><div>git add src/data_analyzer.py
+git commit -m <span class="hljs-string">"feat: add JSON parsing support"</span>
+</div></code></pre>
+<h4 id="%E6%AD%A5%E9%AA%A4-3push-%E5%88%B0-github">步骤 3：Push 到 GitHub</h4>
+<p><strong>做什么</strong>：</p>
+<ul>
+<li>使用 <code>git push</code> 推送到远程仓库</li>
+<li>代码同步到 GitHub</li>
+</ul>
+<p><strong>为什么需要</strong>：</p>
+<ul>
+<li>代码集中管理</li>
+<li>触发自动化流程</li>
+<li>团队共享代码</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<pre class="hljs"><code><div>git push origin main
+</div></code></pre>
+<h4 id="%E6%AD%A5%E9%AA%A4-4ci-pipeline-%E8%87%AA%E5%8A%A8%E8%A7%A6%E5%8F%91">步骤 4：CI Pipeline 自动触发</h4>
+<p><strong>做什么</strong>：</p>
+<ul>
+<li>GitHub Actions 自动检测到代码推送</li>
+<li>启动 CI 工作流</li>
+<li>创建隔离的测试环境</li>
+</ul>
+<p><strong>为什么需要</strong>：</p>
+<ul>
+<li>自动化质量检查</li>
+<li>避免人为遗漏</li>
+<li>快速反馈</li>
+</ul>
+<p><strong>配置文件</strong>：<code>.github/workflows/ci.yml</code></p>
+<h4 id="%E6%AD%A5%E9%AA%A4-5%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95">步骤 5：自动化测试</h4>
+<p><strong>做什么</strong>：</p>
+<ul>
+<li>安装项目依赖</li>
+<li>运行代码质量检查（flake8）</li>
+<li>执行单元测试</li>
+<li>执行集成测试</li>
+<li>生成测试覆盖率报告</li>
+</ul>
+<p><strong>为什么需要</strong>：</p>
+<ul>
+<li>确保代码质量</li>
+<li>防止引入 bug</li>
+<li>保证功能正确性</li>
+</ul>
+<p><strong>测试类型</strong>：</p>
+<ul>
+<li>单元测试：测试独立函数</li>
+<li>集成测试：测试 API 端点</li>
+<li>属性测试：测试通用属性</li>
+</ul>
+<h4 id="%E6%AD%A5%E9%AA%A4-6docker-build-%E6%9E%84%E5%BB%BA%E9%95%9C%E5%83%8F">步骤 6：Docker Build 构建镜像</h4>
+<p><strong>做什么</strong>：</p>
+<ul>
+<li>使用 Dockerfile 构建应用镜像</li>
+<li>打包应用和所有依赖</li>
+<li>创建可部署的容器镜像</li>
+</ul>
+<p><strong>为什么需要</strong>：</p>
+<ul>
+<li>环境一致性</li>
+<li>简化部署</li>
+<li>隔离运行环境</li>
+</ul>
+<p><strong>构建命令</strong>：</p>
+<pre class="hljs"><code><div>docker build -t ecu-log-visualizer:latest .
+</div></code></pre>
+<h4 id="%E6%AD%A5%E9%AA%A4-7container-%E8%BF%90%E8%A1%8C%E5%AE%B9%E5%99%A8">步骤 7：Container 运行容器</h4>
+<p><strong>做什么</strong>：</p>
+<ul>
+<li>从镜像启动容器</li>
+<li>映射端口</li>
+<li>配置环境变量</li>
+</ul>
+<p><strong>为什么需要</strong>：</p>
+<ul>
+<li>隔离的运行环境</li>
+<li>快速启动和停止</li>
+<li>资源管理</li>
+</ul>
+<p><strong>运行命令</strong>：</p>
+<pre class="hljs"><code><div>docker run -d -p 8000:8000 --name ecu-log-visualizer ecu-log-visualizer:latest
+</div></code></pre>
+<h4 id="%E6%AD%A5%E9%AA%A4-8application-%E5%BA%94%E7%94%A8%E8%BF%90%E8%A1%8C">步骤 8：Application 应用运行</h4>
+<p><strong>做什么</strong>：</p>
+<ul>
+<li>FastAPI 应用启动</li>
+<li>监听 HTTP 请求</li>
+<li>提供 API 服务</li>
+</ul>
+<p><strong>为什么需要</strong>：</p>
+<ul>
+<li>提供用户服务</li>
+<li>处理业务逻辑</li>
+</ul>
+<p><strong>访问地址</strong>：</p>
+<ul>
+<li>应用：http://localhost:8000</li>
+<li>API 文档：http://localhost:8000/docs</li>
+</ul>
+<h4 id="%E6%AD%A5%E9%AA%A4-9dashboard-%E5%B7%A5%E7%A8%8B%E4%BB%AA%E8%A1%A8%E6%9D%BF%E7%9B%91%E6%8E%A7">步骤 9：Dashboard 工程仪表板监控</h4>
+<p><strong>做什么</strong>：</p>
+<ul>
+<li>展示 Git 提交历史</li>
+<li>展示 CI/CD 运行状态</li>
+<li>展示 Docker 容器状态</li>
+<li>展示测试结果</li>
+</ul>
+<p><strong>为什么需要</strong>：</p>
+<ul>
+<li>工程透明化</li>
+<li>快速发现问题</li>
+<li>团队协作</li>
+</ul>
+<p><strong>访问地址</strong>：http://localhost:8000/engineering-dashboard.html</p>
+<hr>
+<h2 id="5-%E9%A1%B9%E7%9B%AE%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84-project-structure">5. 项目目录结构 (Project Structure)</h2>
+<pre class="hljs"><code><div>ecu-log-visualizer/
+│
+├── .github/                          # GitHub 配置
+│   └── workflows/
+│       └── ci.yml                    # GitHub Actions CI 配置
+│
+├── .kiro/                            # Kiro 项目配置
+│   └── specs/                        # 规范文档
+│       ├── ecu-log-visualizer/       # 主功能规范
+│       └── engineering-delivery-toolchain/  # 工程工具链规范
+│
+├── docs/                             # 项目文档
+│   ├── configuration.md              # 配置说明
+│   ├── log_format.md                 # 日志格式说明
+│   ├── demo.md                       # 演示指南
+│   ├── maintenance.md                # 维护指南
+│   ├── github-setup.md               # GitHub 设置指南
+│   ├── engineering-toolchain.md      # 工程工具链说明
+│   └── system_manual.md              # 本文档
+│
+├── examples/                         # 示例数据
+│   ├── sample_ecu_log.csv            # CSV 格式示例
+│   └── sample_ecu_log.json           # JSON 格式示例
+│
+├── frontend/                         # 前端文件
+│   ├── index.html                    # 主页面
+│   ├── app.js                        # 应用逻辑
+│   ├── styles.css                    # 样式文件
+│   ├── engineering-dashboard.html    # 工程仪表板页面
+│   ├── engineering-dashboard.js      # 仪表板逻辑
+│   └── engineering-dashboard.css     # 仪表板样式
+│
+├── scripts/                          # 自动化脚本
+│   ├── dev.sh                        # 开发环境设置
+│   ├── test.sh                       # 运行测试
+│   ├── build.sh                      # 构建 Docker 镜像
+│   └── deploy.sh                     # 部署应用
+│
+├── src/                              # 源代码
+│   ├── main.py                       # FastAPI 应用主文件
+│   ├── models.py                     # 数据模型定义
+│   ├── file_handler.py               # 文件处理模块
+│   ├── data_analyzer.py              # 数据分析模块
+│   ├── visualization_engine.py       # 可视化引擎
+│   ├── error_handler.py              # 错误处理
+│   ├── git_integration.py            # Git 集成（待实现）
+│   ├── cicd_status.py                # CI/CD 监控（待实现）
+│   └── docker_status.py              # Docker 监控（待实现）
+│
+├── tests/                            # 测试文件
+│   ├── unit/                         # 单元测试
+│   │   ├── test_file_handler.py
+│   │   ├── test_data_analyzer.py
+│   │   ├── test_visualization_engine.py
+│   │   └── test_models.py
+│   ├── integration/                  # 集成测试
+│   │   ├── test_api_upload.py
+│   │   ├── test_api_stats.py
+│   │   ├── test_api_chart.py
+│   │   └── test_api_export.py
+│   └── property/                     # 属性测试
+│       └── test_properties_visualization.py
+│
+├── uploads/                          # 上传文件存储目录
+│   └── .gitkeep
+│
+├── .dockerignore                     # Docker 构建排除文件
+├── .gitignore                        # Git 忽略文件
+├── CHANGELOG.md                      # 变更日志
+├── Dockerfile                        # Docker 镜像定义
+├── Jenkinsfile                       # Jenkins Pipeline 定义
+├── pytest.ini                        # pytest 配置
+├── README.md                         # 项目说明
+├── requirements.txt                  # Python 依赖
+├── run_server.py                     # 服务器启动脚本（Python）
+└── run_server.sh                     # 服务器启动脚本（Shell）
+</div></code></pre>
+<h3 id="51-%E5%85%B3%E9%94%AE%E7%9B%AE%E5%BD%95%E8%AF%B4%E6%98%8E">5.1 关键目录说明</h3>
+<h4 id="src---%E6%BA%90%E4%BB%A3%E7%A0%81%E7%9B%AE%E5%BD%95"><code>src/</code> - 源代码目录</h4>
+<p>包含所有 Python 源代码，按模块组织：</p>
+<ul>
+<li><strong>main.py</strong>: FastAPI 应用入口，定义所有 API 端点</li>
+<li><strong>models.py</strong>: Pydantic 数据模型，用于请求/响应验证</li>
+<li><strong>file_handler.py</strong>: 处理文件上传、验证、存储</li>
+<li><strong>data_analyzer.py</strong>: 解析日志、计算统计、过滤数据</li>
+<li><strong>visualization_engine.py</strong>: 生成 Plotly 图表配置</li>
+<li><strong>error_handler.py</strong>: 全局错误处理和日志记录</li>
+</ul>
+<h4 id="tests---%E6%B5%8B%E8%AF%95%E7%9B%AE%E5%BD%95"><code>tests/</code> - 测试目录</h4>
+<p>包含三类测试：</p>
+<ul>
+<li><strong>unit/</strong>: 单元测试，测试独立模块功能</li>
+<li><strong>integration/</strong>: 集成测试，测试 API 端点</li>
+<li><strong>property/</strong>: 属性测试，使用 Hypothesis 测试通用属性</li>
+</ul>
+<h4 id="frontend---%E5%89%8D%E7%AB%AF%E7%9B%AE%E5%BD%95"><code>frontend/</code> - 前端目录</h4>
+<p>包含所有前端文件：</p>
+<ul>
+<li><strong>index.html</strong>: 主应用界面</li>
+<li><strong>app.js</strong>: 前端逻辑（文件上传、数据展示、图表渲染）</li>
+<li><strong>styles.css</strong>: 样式定义</li>
+<li><strong>engineering-dashboard.</strong>*: 工程仪表板相关文件</li>
+</ul>
+<h4 id="docs---%E6%96%87%E6%A1%A3%E7%9B%AE%E5%BD%95"><code>docs/</code> - 文档目录</h4>
+<p>包含所有项目文档：</p>
+<ul>
+<li>配置说明</li>
+<li>日志格式规范</li>
+<li>操作指南</li>
+<li>工程说明</li>
+</ul>
+<h4 id="scripts---%E8%84%9A%E6%9C%AC%E7%9B%AE%E5%BD%95"><code>scripts/</code> - 脚本目录</h4>
+<p>包含自动化脚本：</p>
+<ul>
+<li><strong>dev.sh</strong>: 快速设置开发环境</li>
+<li><strong>test.sh</strong>: 运行所有测试</li>
+<li><strong>build.sh</strong>: 构建 Docker 镜像</li>
+<li><strong>deploy.sh</strong>: 部署应用</li>
+</ul>
+<h4 id="githubworkflows---cicd-%E9%85%8D%E7%BD%AE"><code>.github/workflows/</code> - CI/CD 配置</h4>
+<p>包含 GitHub Actions 工作流定义</p>
+<hr>
+<h2 id="6-%E5%AE%89%E8%A3%85%E4%B8%8E%E8%BF%90%E8%A1%8C%E6%8C%87%E5%8D%97-quick-start">6. 安装与运行指南 (Quick Start)</h2>
+<h3 id="61-%E7%8E%AF%E5%A2%83%E8%A6%81%E6%B1%82">6.1 环境要求</h3>
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th>版本要求</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Python</strong></td>
+<td>3.9 或更高</td>
+<td>推荐 3.12</td>
+</tr>
+<tr>
+<td><strong>pip</strong></td>
+<td>最新版本</td>
+<td>Python 包管理器</td>
+</tr>
+<tr>
+<td><strong>Git</strong></td>
+<td>2.x</td>
+<td>版本控制</td>
+</tr>
+<tr>
+<td><strong>Docker</strong></td>
+<td>24.x（可选）</td>
+<td>容器化部署</td>
+</tr>
+</tbody>
+</table>
+<p><strong>操作系统支持</strong>：</p>
+<ul>
+<li>Windows 10/11</li>
+<li>macOS 10.15+</li>
+<li>Linux (Ubuntu 20.04+, CentOS 8+)</li>
+</ul>
+<h3 id="62-%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B5-%E5%88%86%E9%92%9F">6.2 快速开始（5 分钟）</h3>
+<h4 id="%E6%AD%A5%E9%AA%A4-1%E8%8E%B7%E5%8F%96%E4%BB%A3%E7%A0%81">步骤 1：获取代码</h4>
+<pre class="hljs"><code><div><span class="hljs-comment"># 克隆仓库</span>
+git <span class="hljs-built_in">clone</span> https://github.com/your-org/ecu-log-visualizer.git
+
+<span class="hljs-comment"># 进入项目目录</span>
+<span class="hljs-built_in">cd</span> ecu-log-visualizer
+</div></code></pre>
+<h4 id="%E6%AD%A5%E9%AA%A4-2%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96">步骤 2：安装依赖</h4>
+<pre class="hljs"><code><div><span class="hljs-comment"># 创建虚拟环境（推荐）</span>
+python -m venv venv
+
+<span class="hljs-comment"># 激活虚拟环境</span>
+<span class="hljs-comment"># Windows:</span>
+venv\Scripts\activate
+<span class="hljs-comment"># Linux/macOS:</span>
+<span class="hljs-built_in">source</span> venv/bin/activate
+
+<span class="hljs-comment"># 安装依赖</span>
+pip install -r requirements.txt
+</div></code></pre>
+<p><strong>依赖列表</strong>：</p>
+<ul>
+<li>fastapi: Web 框架</li>
+<li>uvicorn: ASGI 服务器</li>
+<li>pandas: 数据处理</li>
+<li>plotly: 数据可视化</li>
+<li>pytest: 测试框架</li>
+<li>hypothesis: 属性测试</li>
+</ul>
+<h4 id="%E6%AD%A5%E9%AA%A4-3%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1">步骤 3：启动服务</h4>
+<p><strong>方式 1：使用 Python 脚本</strong></p>
+<pre class="hljs"><code><div>python run_server.py
+</div></code></pre>
+<p><strong>方式 2：使用 Shell 脚本（Linux/macOS）</strong></p>
+<pre class="hljs"><code><div>./run_server.sh
+</div></code></pre>
+<p><strong>方式 3：直接使用 uvicorn</strong></p>
+<pre class="hljs"><code><div>uvicorn src.main:app --host 127.0.0.1 --port 8000
+</div></code></pre>
+<h4 id="%E6%AD%A5%E9%AA%A4-4%E8%AE%BF%E9%97%AE%E7%B3%BB%E7%BB%9F">步骤 4：访问系统</h4>
+<p>服务启动后，您将看到：</p>
+<pre class="hljs"><code><div>============================================================
+ECU Log Visualizer - Backend Server
+============================================================
+Starting server on http://127.0.0.1:8000
+API Documentation: http://127.0.0.1:8000/docs
+Alternative Docs: http://127.0.0.1:8000/redoc
+Health Check: http://127.0.0.1:8000/health
+============================================================
+</div></code></pre>
+<p><strong>访问地址</strong>：</p>
+<ul>
+<li><strong>主应用</strong>: http://localhost:8000</li>
+<li><strong>API 文档</strong>: http://localhost:8000/docs</li>
+<li><strong>健康检查</strong>: http://localhost:8000/health</li>
+<li><strong>工程仪表板</strong>: http://localhost:8000/engineering-dashboard.html</li>
+</ul>
+<h4 id="%E6%AD%A5%E9%AA%A4-5%E6%B5%8B%E8%AF%95%E4%B8%8A%E4%BC%A0">步骤 5：测试上传</h4>
+<ol>
+<li>打开浏览器访问 http://localhost:8000</li>
+<li>点击&quot;选择文件&quot;按钮</li>
+<li>选择 <code>examples/sample_ecu_log.csv</code></li>
+<li>点击&quot;上传文件&quot;</li>
+<li>查看统计信息和可视化图表</li>
+</ol>
+<h3 id="63-%E9%AA%8C%E8%AF%81%E5%AE%89%E8%A3%85">6.3 验证安装</h3>
+<p>运行测试套件验证安装：</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># 运行所有测试</span>
+pytest tests/ -v
+
+<span class="hljs-comment"># 运行单元测试</span>
+pytest tests/unit/ -v
+
+<span class="hljs-comment"># 运行集成测试</span>
+pytest tests/integration/ -v
+
+<span class="hljs-comment"># 生成覆盖率报告</span>
+pytest tests/ --cov=src --cov-report=html
+</div></code></pre>
+<p><strong>预期结果</strong>：</p>
+<ul>
+<li>所有测试通过</li>
+<li>覆盖率 &gt; 80%</li>
+</ul>
+<hr>
+<h2 id="7-docker-%E8%BF%90%E8%A1%8C%E6%96%B9%E5%BC%8F">7. Docker 运行方式</h2>
+<h3 id="71-%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BD%BF%E7%94%A8-docker">7.1 为什么使用 Docker</h3>
+<p><strong>问题</strong>：</p>
+<ul>
+<li>不同机器环境不一致</li>
+<li>依赖安装复杂</li>
+<li>部署配置繁琐</li>
+</ul>
+<p><strong>Docker 解决方案</strong>：</p>
+<ul>
+<li><strong>环境一致性</strong>: 开发、测试、生产环境完全一致</li>
+<li><strong>快速部署</strong>: 一条命令启动应用</li>
+<li><strong>资源隔离</strong>: 应用运行在独立容器中</li>
+<li><strong>易于扩展</strong>: 可以轻松启动多个实例</li>
+</ul>
+<h3 id="72-%E6%9E%84%E5%BB%BA-docker-%E9%95%9C%E5%83%8F">7.2 构建 Docker 镜像</h3>
+<h4 id="%E6%AD%A5%E9%AA%A4-1%E6%9F%A5%E7%9C%8B-dockerfile">步骤 1：查看 Dockerfile</h4>
+<pre class="hljs"><code><div><span class="hljs-comment"># 多阶段构建 - 第一阶段：构建</span>
+<span class="hljs-keyword">FROM</span> python:<span class="hljs-number">3.12</span>-slim as builder
+<span class="hljs-keyword">WORKDIR</span><span class="bash"> /app</span>
+<span class="hljs-keyword">COPY</span><span class="bash"> requirements.txt .</span>
+<span class="hljs-keyword">RUN</span><span class="bash"> pip install --user --no-cache-dir -r requirements.txt</span>
+
+<span class="hljs-comment"># 第二阶段：运行</span>
+<span class="hljs-keyword">FROM</span> python:<span class="hljs-number">3.12</span>-slim
+<span class="hljs-keyword">WORKDIR</span><span class="bash"> /app</span>
+
+<span class="hljs-comment"># 复制依赖</span>
+<span class="hljs-keyword">COPY</span><span class="bash"> --from=builder /root/.<span class="hljs-built_in">local</span> /root/.<span class="hljs-built_in">local</span></span>
+<span class="hljs-keyword">ENV</span> PATH=/root/.local/bin:$PATH
+
+<span class="hljs-comment"># 复制应用代码</span>
+<span class="hljs-keyword">COPY</span><span class="bash"> src/ ./src/</span>
+<span class="hljs-keyword">COPY</span><span class="bash"> frontend/ ./frontend/</span>
+<span class="hljs-keyword">COPY</span><span class="bash"> examples/ ./examples/</span>
+<span class="hljs-keyword">COPY</span><span class="bash"> run_server.py .</span>
+
+<span class="hljs-comment"># 创建上传目录</span>
+<span class="hljs-keyword">RUN</span><span class="bash"> mkdir -p uploads</span>
+
+<span class="hljs-comment"># 暴露端口</span>
+<span class="hljs-keyword">EXPOSE</span> <span class="hljs-number">8000</span>
+
+<span class="hljs-comment"># 健康检查</span>
+<span class="hljs-keyword">HEALTHCHECK</span><span class="bash"> --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD python -c <span class="hljs-string">"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"</span></span>
+
+<span class="hljs-comment"># 启动应用</span>
+<span class="hljs-keyword">CMD</span><span class="bash"> [<span class="hljs-string">"python"</span>, <span class="hljs-string">"run_server.py"</span>]</span>
+</div></code></pre>
+<p><strong>多阶段构建优势</strong>：</p>
+<ul>
+<li>减小镜像体积</li>
+<li>只包含运行时需要的文件</li>
+<li>提高安全性</li>
+</ul>
+<h4 id="%E6%AD%A5%E9%AA%A4-2%E6%9E%84%E5%BB%BA%E9%95%9C%E5%83%8F">步骤 2：构建镜像</h4>
+<pre class="hljs"><code><div><span class="hljs-comment"># 构建镜像</span>
+docker build -t ecu-log-visualizer:latest .
+
+<span class="hljs-comment"># 查看镜像</span>
+docker images | grep ecu-log-visualizer
+</div></code></pre>
+<p><strong>构建选项</strong>：</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># 指定版本标签</span>
+docker build -t ecu-log-visualizer:v1.0.0 .
+
+<span class="hljs-comment"># 不使用缓存</span>
+docker build --no-cache -t ecu-log-visualizer:latest .
+
+<span class="hljs-comment"># 查看构建过程</span>
+docker build -t ecu-log-visualizer:latest . --progress=plain
+</div></code></pre>
+<h3 id="73-%E8%BF%90%E8%A1%8C-docker-%E5%AE%B9%E5%99%A8">7.3 运行 Docker 容器</h3>
+<h4 id="%E5%9F%BA%E6%9C%AC%E8%BF%90%E8%A1%8C">基本运行</h4>
+<pre class="hljs"><code><div><span class="hljs-comment"># 运行容器</span>
+docker run -d \
+  --name ecu-log-visualizer \
+  -p 8000:8000 \
+  ecu-log-visualizer:latest
+
+<span class="hljs-comment"># 查看容器状态</span>
+docker ps
+
+<span class="hljs-comment"># 查看容器日志</span>
+docker logs ecu-log-visualizer
+
+<span class="hljs-comment"># 实时查看日志</span>
+docker logs -f ecu-log-visualizer
+</div></code></pre>
+<h4 id="%E9%AB%98%E7%BA%A7%E8%BF%90%E8%A1%8C%E9%80%89%E9%A1%B9">高级运行选项</h4>
+<pre class="hljs"><code><div><span class="hljs-comment"># 挂载本地目录（持久化上传文件）</span>
+docker run -d \
+  --name ecu-log-visualizer \
+  -p 8000:8000 \
+  -v $(<span class="hljs-built_in">pwd</span>)/uploads:/app/uploads \
+  ecu-log-visualizer:latest
+
+<span class="hljs-comment"># 设置环境变量</span>
+docker run -d \
+  --name ecu-log-visualizer \
+  -p 8000:8000 \
+  -e MAX_UPLOAD_SIZE=100 \
+  ecu-log-visualizer:latest
+
+<span class="hljs-comment"># 限制资源使用</span>
+docker run -d \
+  --name ecu-log-visualizer \
+  -p 8000:8000 \
+  --memory=<span class="hljs-string">"512m"</span> \
+  --cpus=<span class="hljs-string">"1.0"</span> \
+  ecu-log-visualizer:latest
+</div></code></pre>
+<h3 id="74-docker-%E5%AE%B9%E5%99%A8%E7%AE%A1%E7%90%86">7.4 Docker 容器管理</h3>
+<pre class="hljs"><code><div><span class="hljs-comment"># 停止容器</span>
+docker stop ecu-log-visualizer
+
+<span class="hljs-comment"># 启动容器</span>
+docker start ecu-log-visualizer
+
+<span class="hljs-comment"># 重启容器</span>
+docker restart ecu-log-visualizer
+
+<span class="hljs-comment"># 删除容器</span>
+docker rm ecu-log-visualizer
+
+<span class="hljs-comment"># 进入容器（调试）</span>
+docker <span class="hljs-built_in">exec</span> -it ecu-log-visualizer /bin/bash
+
+<span class="hljs-comment"># 查看容器资源使用</span>
+docker stats ecu-log-visualizer
+
+<span class="hljs-comment"># 查看容器详细信息</span>
+docker inspect ecu-log-visualizer
+</div></code></pre>
+<h3 id="75-docker-compose%E5%8F%AF%E9%80%89">7.5 Docker Compose（可选）</h3>
+<p>创建 <code>docker-compose.yml</code>：</p>
+<pre class="hljs"><code><div><span class="hljs-attr">version:</span> <span class="hljs-string">'3.8'</span>
+
+<span class="hljs-attr">services:</span>
+  <span class="hljs-attr">ecu-log-visualizer:</span>
+    <span class="hljs-attr">build:</span> <span class="hljs-string">.</span>
+    <span class="hljs-attr">container_name:</span> <span class="hljs-string">ecu-log-visualizer</span>
+    <span class="hljs-attr">ports:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">"8000:8000"</span>
+    <span class="hljs-attr">volumes:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">./uploads:/app/uploads</span>
+    <span class="hljs-attr">environment:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">MAX_UPLOAD_SIZE=50</span>
+    <span class="hljs-attr">restart:</span> <span class="hljs-string">unless-stopped</span>
+    <span class="hljs-attr">healthcheck:</span>
+      <span class="hljs-attr">test:</span> <span class="hljs-string">["CMD",</span> <span class="hljs-string">"python"</span><span class="hljs-string">,</span> <span class="hljs-string">"-c"</span><span class="hljs-string">,</span> <span class="hljs-string">"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"</span><span class="hljs-string">]</span>
+      <span class="hljs-attr">interval:</span> <span class="hljs-string">30s</span>
+      <span class="hljs-attr">timeout:</span> <span class="hljs-string">3s</span>
+      <span class="hljs-attr">retries:</span> <span class="hljs-number">3</span>
+      <span class="hljs-attr">start_period:</span> <span class="hljs-string">5s</span>
+</div></code></pre>
+<p><strong>使用 Docker Compose</strong>：</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># 启动服务</span>
+docker-compose up -d
+
+<span class="hljs-comment"># 查看日志</span>
+docker-compose logs -f
+
+<span class="hljs-comment"># 停止服务</span>
+docker-compose down
+
+<span class="hljs-comment"># 重新构建并启动</span>
+docker-compose up -d --build
+</div></code></pre>
+<hr>
+<h2 id="8-cicd-%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B">8. CI/CD 工作流程</h2>
+<h3 id="81-cicd-%E6%A6%82%E8%BF%B0">8.1 CI/CD 概述</h3>
+<p><strong>CI (Continuous Integration) - 持续集成</strong>：</p>
+<ul>
+<li>开发者频繁地将代码集成到主分支</li>
+<li>每次集成都通过自动化构建和测试验证</li>
+<li>快速发现和定位错误</li>
+</ul>
+<p><strong>CD (Continuous Delivery/Deployment) - 持续交付/部署</strong>：</p>
+<ul>
+<li>代码通过 CI 后自动部署到测试/生产环境</li>
+<li>减少手动部署错误</li>
+<li>加快交付速度</li>
+</ul>
+<h3 id="82-github-actions-%E5%B7%A5%E4%BD%9C%E6%B5%81">8.2 GitHub Actions 工作流</h3>
+<h4 id="%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6githubworkflowsciyml">配置文件：<code>.github/workflows/ci.yml</code></h4>
+<pre class="hljs"><code><div><span class="hljs-attr">name:</span> <span class="hljs-string">CI</span> <span class="hljs-string">Pipeline</span>
+
+<span class="hljs-attr">on:</span>
+  <span class="hljs-attr">push:</span>
+    <span class="hljs-attr">branches:</span> <span class="hljs-string">[</span> <span class="hljs-string">main,</span> <span class="hljs-string">develop</span> <span class="hljs-string">]</span>
+  <span class="hljs-attr">pull_request:</span>
+    <span class="hljs-attr">branches:</span> <span class="hljs-string">[</span> <span class="hljs-string">main</span> <span class="hljs-string">]</span>
+  <span class="hljs-attr">workflow_dispatch:</span>
+
+<span class="hljs-attr">jobs:</span>
+  <span class="hljs-attr">test:</span>
+    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">ubuntu-latest</span>
+    
+    <span class="hljs-attr">steps:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Checkout</span> <span class="hljs-string">code</span>
+      <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@v3</span>
+    
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Set</span> <span class="hljs-string">up</span> <span class="hljs-string">Python</span>
+      <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/setup-python@v4</span>
+      <span class="hljs-attr">with:</span>
+        <span class="hljs-attr">python-version:</span> <span class="hljs-string">'3.12'</span>
+    
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Install</span> <span class="hljs-string">dependencies</span>
+      <span class="hljs-attr">run:</span> <span class="hljs-string">|
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+</span>    
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Lint</span> <span class="hljs-string">with</span> <span class="hljs-string">flake8</span>
+      <span class="hljs-attr">run:</span> <span class="hljs-string">|
+        pip install flake8
+        flake8 src/ --max-line-length=120 --count --statistics
+</span>    
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Run</span> <span class="hljs-string">tests</span>
+      <span class="hljs-attr">run:</span> <span class="hljs-string">|
+        pytest tests/ -v --cov=src --cov-report=xml
+</span>    
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Upload</span> <span class="hljs-string">coverage</span>
+      <span class="hljs-attr">uses:</span> <span class="hljs-string">codecov/codecov-action@v3</span>
+      <span class="hljs-attr">with:</span>
+        <span class="hljs-attr">file:</span> <span class="hljs-string">./coverage.xml</span>
+    
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Build</span> <span class="hljs-string">Docker</span> <span class="hljs-string">image</span>
+      <span class="hljs-attr">if:</span> <span class="hljs-string">github.ref</span> <span class="hljs-string">==</span> <span class="hljs-string">'refs/heads/main'</span>
+      <span class="hljs-attr">run:</span> <span class="hljs-string">|
+        docker build -t ecu-log-visualizer:${{ github.sha }} .
+</span></div></code></pre>
+<h4 id="%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B%E8%AF%B4%E6%98%8E">工作流程说明</h4>
+<p><strong>触发条件</strong>：</p>
+<ol>
+<li><strong>push</strong>: 推送代码到 main 或 develop 分支</li>
+<li><strong>pull_request</strong>: 创建针对 main 分支的 PR</li>
+<li><strong>workflow_dispatch</strong>: 手动触发</li>
+</ol>
+<p><strong>执行步骤</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>说明</th>
+<th>失败影响</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Checkout</strong></td>
+<td>检出代码</td>
+<td>流程终止</td>
+</tr>
+<tr>
+<td><strong>Setup Python</strong></td>
+<td>安装 Python 3.12</td>
+<td>流程终止</td>
+</tr>
+<tr>
+<td><strong>Install Dependencies</strong></td>
+<td>安装项目依赖</td>
+<td>流程终止</td>
+</tr>
+<tr>
+<td><strong>Lint</strong></td>
+<td>代码质量检查</td>
+<td>流程终止</td>
+</tr>
+<tr>
+<td><strong>Test</strong></td>
+<td>运行测试套件</td>
+<td>流程终止</td>
+</tr>
+<tr>
+<td><strong>Upload Coverage</strong></td>
+<td>上传覆盖率报告</td>
+<td>继续执行</td>
+</tr>
+<tr>
+<td><strong>Build Docker</strong></td>
+<td>构建 Docker 镜像（仅 main 分支）</td>
+<td>流程终止</td>
+</tr>
+</tbody>
+</table>
+<h4 id="%E6%9F%A5%E7%9C%8B-ci-%E7%BB%93%E6%9E%9C">查看 CI 结果</h4>
+<ol>
+<li>访问 GitHub 仓库</li>
+<li>点击 &quot;Actions&quot; 标签</li>
+<li>查看工作流运行历史</li>
+<li>点击具体运行查看详细日志</li>
+</ol>
+<p><strong>状态标识</strong>：</p>
+<ul>
+<li>✅ 绿色勾：成功</li>
+<li>❌ 红色叉：失败</li>
+<li>🟡 黄色圆：进行中</li>
+</ul>
+<h3 id="83-jenkins-pipeline">8.3 Jenkins Pipeline</h3>
+<h4 id="%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6jenkinsfile">配置文件：<code>Jenkinsfile</code></h4>
+<pre class="hljs"><code><div>pipeline {
+    agent any
+    
+    environment {
+        DOCKER_IMAGE = <span class="hljs-string">"ecu-log-visualizer"</span>
+        DOCKER_TAG = <span class="hljs-string">"${BUILD_NUMBER}"</span>
+    }
+    
+    stages {
+        stage(<span class="hljs-string">'Checkout'</span>) {
+            steps {
+                echo <span class="hljs-string">'Checking out source code...'</span>
+                checkout scm
+            }
+        }
+        
+        stage(<span class="hljs-string">'Install Dependencies'</span>) {
+            steps {
+                echo <span class="hljs-string">'Installing Python dependencies...'</span>
+                sh <span class="hljs-string">'''
+                    python3 -m pip install --upgrade pip
+                    pip install -r requirements.txt
+                '''</span>
+            }
+        }
+        
+        stage(<span class="hljs-string">'Lint'</span>) {
+            steps {
+                echo <span class="hljs-string">'Running code quality checks...'</span>
+                sh <span class="hljs-string">'''
+                    pip install flake8
+                    flake8 src/ --max-line-length=120 --count --statistics
+                '''</span>
+            }
+        }
+        
+        stage(<span class="hljs-string">'Test'</span>) {
+            steps {
+                echo <span class="hljs-string">'Running test suite...'</span>
+                sh <span class="hljs-string">'''
+                    pytest tests/ -v --cov=src --junitxml=test-results.xml
+                '''</span>
+            }
+        }
+        
+        stage(<span class="hljs-string">'Build Docker Image'</span>) {
+            steps {
+                echo <span class="hljs-string">'Building Docker image...'</span>
+                sh <span class="hljs-string">'''
+                    docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} .
+                    docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${DOCKER_IMAGE}:latest
+                '''</span>
+            }
+        }
+        
+        stage(<span class="hljs-string">'Archive Artifacts'</span>) {
+            steps {
+                echo <span class="hljs-string">'Archiving test results...'</span>
+                junit <span class="hljs-string">'test-results.xml'</span>
+            }
+        }
+    }
+    
+    post {
+        always {
+            echo <span class="hljs-string">'Cleaning up workspace...'</span>
+            cleanWs()
+        }
+        success {
+            echo <span class="hljs-string">'Pipeline completed successfully!'</span>
+        }
+        failure {
+            echo <span class="hljs-string">'Pipeline failed!'</span>
+        }
+    }
+}
+</div></code></pre>
+<h4 id="pipeline-%E9%98%B6%E6%AE%B5%E8%AF%B4%E6%98%8E">Pipeline 阶段说明</h4>
+<p><strong>Stage 1: Checkout</strong></p>
+<ul>
+<li>从 Git 仓库检出代码</li>
+<li>确保使用最新代码</li>
+</ul>
+<p><strong>Stage 2: Install Dependencies</strong></p>
+<ul>
+<li>安装 Python 依赖</li>
+<li>准备测试环境</li>
+</ul>
+<p><strong>Stage 3: Lint</strong></p>
+<ul>
+<li>运行 flake8 代码检查</li>
+<li>确保代码符合规范</li>
+</ul>
+<p><strong>Stage 4: Test</strong></p>
+<ul>
+<li>运行 pytest 测试套件</li>
+<li>生成 JUnit XML 报告</li>
+</ul>
+<p><strong>Stage 5: Build Docker Image</strong></p>
+<ul>
+<li>构建 Docker 镜像</li>
+<li>使用 BUILD_NUMBER 作为标签</li>
+</ul>
+<p><strong>Stage 6: Archive Artifacts</strong></p>
+<ul>
+<li>归档测试结果</li>
+<li>在 Jenkins UI 中展示</li>
+</ul>
+<h4 id="%E5%9C%A8-jenkins-%E4%B8%AD%E9%85%8D%E7%BD%AE">在 Jenkins 中配置</h4>
+<ol>
+<li>创建新的 Pipeline 项目</li>
+<li>配置 Git 仓库 URL</li>
+<li>指定 Jenkinsfile 路径</li>
+<li>配置触发器（如 GitHub webhook）</li>
+<li>保存并运行</li>
+</ol>
+<h3 id="84-cicd-%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5">8.4 CI/CD 最佳实践</h3>
+<p><strong>1. 频繁提交</strong></p>
+<ul>
+<li>每天至少提交一次</li>
+<li>小步快跑，快速反馈</li>
+</ul>
+<p><strong>2. 保持构建快速</strong></p>
+<ul>
+<li>优化测试执行时间</li>
+<li>使用缓存加速构建</li>
+</ul>
+<p><strong>3. 修复失败的构建</strong></p>
+<ul>
+<li>构建失败时立即修复</li>
+<li>不要在失败的构建上继续开发</li>
+</ul>
+<p><strong>4. 自动化一切</strong></p>
+<ul>
+<li>测试自动化</li>
+<li>部署自动化</li>
+<li>通知自动化</li>
+</ul>
+<p><strong>5. 监控和度量</strong></p>
+<ul>
+<li>跟踪构建成功率</li>
+<li>监控构建时间</li>
+<li>分析失败原因</li>
+</ul>
+<hr>
+<h2 id="9-engineering-dashboard">9. Engineering Dashboard</h2>
+<h3 id="91-%E4%BB%80%E4%B9%88%E6%98%AF-engineering-dashboard">9.1 什么是 Engineering Dashboard</h3>
+<p>Engineering Dashboard（工程仪表板）是一个<strong>可视化界面</strong>，用于展示软件工程过程中的关键指标和状态信息。</p>
+<p><strong>目标用户</strong>：</p>
+<ul>
+<li><strong>管理层</strong>: 了解项目进展和工程质量</li>
+<li><strong>技术负责人</strong>: 监控系统健康状态</li>
+<li><strong>开发团队</strong>: 快速发现和定位问题</li>
+</ul>
+<h3 id="92-dashboard-%E5%B1%95%E7%A4%BA%E5%86%85%E5%AE%B9">9.2 Dashboard 展示内容</h3>
+<h4 id="921-git-%E6%8F%90%E4%BA%A4%E5%8E%86%E5%8F%B2">9.2.1 Git 提交历史</h4>
+<p><strong>展示内容</strong>：</p>
+<ul>
+<li>最近 50 次提交记录</li>
+<li>提交者、时间、消息</li>
+<li>当前分支信息</li>
+</ul>
+<p><strong>价值</strong>：</p>
+<ul>
+<li>了解开发活跃度</li>
+<li>追踪代码变更</li>
+<li>团队协作可见性</li>
+</ul>
+<p><strong>示例显示</strong>：</p>
+<pre class="hljs"><code><div>📝 feat: add JSON parsing support
+   👤 张三 | 🕐 2026-03-04 10:30:00
+
+📝 fix: handle empty sensor data
+   👤 李四 | 🕐 2026-03-04 09:15:00
+
+📝 docs: update API documentation
+   👤 王五 | 🕐 2026-03-03 16:45:00
+</div></code></pre>
+<h4 id="922-cicd-pipeline-%E7%8A%B6%E6%80%81">9.2.2 CI/CD Pipeline 状态</h4>
+<p><strong>展示内容</strong>：</p>
+<ul>
+<li>GitHub Actions 最新运行状态</li>
+<li>Jenkins Pipeline 最新构建状态</li>
+<li>成功率统计</li>
+<li>失败原因（如果失败）</li>
+</ul>
+<p><strong>价值</strong>：</p>
+<ul>
+<li>快速发现构建问题</li>
+<li>了解代码质量趋势</li>
+<li>自动化流程透明化</li>
+</ul>
+<p><strong>状态指示器</strong>：</p>
+<ul>
+<li>🟢 <strong>成功</strong>: 所有检查通过</li>
+<li>🔴 <strong>失败</strong>: 存在失败的检查</li>
+<li>🟡 <strong>进行中</strong>: 正在运行</li>
+<li>⚪ <strong>未配置</strong>: CI/CD 未设置</li>
+</ul>
+<h4 id="923-docker-%E5%AE%B9%E5%99%A8%E7%8A%B6%E6%80%81">9.2.3 Docker 容器状态</h4>
+<p><strong>展示内容</strong>：</p>
+<ul>
+<li>容器运行状态</li>
+<li>镜像信息</li>
+<li>端口映射</li>
+<li>健康检查结果</li>
+</ul>
+<p><strong>价值</strong>：</p>
+<ul>
+<li>确认应用正在运行</li>
+<li>监控容器健康</li>
+<li>快速定位部署问题</li>
+</ul>
+<p><strong>状态显示</strong>：</p>
+<pre class="hljs"><code><div>🐳 Docker Container Status
+   Status: 🟢 Running
+   Image: ecu-log-visualizer:latest
+   Ports: 8000:8000
+   Health: ✅ Healthy
+   Uptime: 2 hours 15 minutes
+</div></code></pre>
+<h4 id="924-%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C">9.2.4 测试结果</h4>
+<p><strong>展示内容</strong>：</p>
+<ul>
+<li>测试总数</li>
+<li>通过/失败数量</li>
+<li>测试覆盖率</li>
+<li>最近测试运行时间</li>
+</ul>
+<p><strong>价值</strong>：</p>
+<ul>
+<li>代码质量可见性</li>
+<li>快速发现测试问题</li>
+<li>覆盖率趋势监控</li>
+</ul>
+<p><strong>示例显示</strong>：</p>
+<pre class="hljs"><code><div>🧪 Test Results
+   Total: 156 tests
+   ✅ Passed: 154
+   ❌ Failed: 2
+   📊 Coverage: 87%
+   ⏱️ Duration: 45 seconds
+</div></code></pre>
+<h4 id="925-api-%E6%9C%8D%E5%8A%A1%E5%81%A5%E5%BA%B7%E7%8A%B6%E6%80%81">9.2.5 API 服务健康状态</h4>
+<p><strong>展示内容</strong>：</p>
+<ul>
+<li>API 服务是否运行</li>
+<li>响应时间</li>
+<li>最后检查时间</li>
+</ul>
+<p><strong>价值</strong>：</p>
+<ul>
+<li>确认服务可用性</li>
+<li>监控性能</li>
+<li>快速发现服务问题</li>
+</ul>
+<h3 id="93-%E8%AE%BF%E9%97%AE-dashboard">9.3 访问 Dashboard</h3>
+<p><strong>URL</strong>: http://localhost:8000/engineering-dashboard.html</p>
+<p><strong>功能</strong>：</p>
+<ul>
+<li>自动刷新（每 30 秒）</li>
+<li>手动刷新按钮</li>
+<li>响应式设计（支持桌面和平板）</li>
+</ul>
+<h3 id="94-dashboard-%E5%AF%B9%E5%9B%A2%E9%98%9F%E7%9A%84%E4%BB%B7%E5%80%BC">9.4 Dashboard 对团队的价值</h3>
+<p><strong>对管理层</strong>：</p>
+<ul>
+<li>一目了然的项目状态</li>
+<li>工程质量可视化</li>
+<li>团队工作透明化</li>
+</ul>
+<p><strong>对技术负责人</strong>：</p>
+<ul>
+<li>快速发现系统问题</li>
+<li>监控工程指标</li>
+<li>决策支持数据</li>
+</ul>
+<p><strong>对开发团队</strong>：</p>
+<ul>
+<li>实时反馈</li>
+<li>问题快速定位</li>
+<li>协作效率提升</li>
+</ul>
+<p><strong>对新人</strong>：</p>
+<ul>
+<li>理解工程流程</li>
+<li>学习最佳实践</li>
+<li>快速融入团队</li>
+</ul>
+<hr>
+<h2 id="10-%E6%93%8D%E4%BD%9C%E6%B5%81%E7%A8%8B-operation-guide">10. 操作流程 (Operation Guide)</h2>
+<h3 id="101-%E5%90%AF%E5%8A%A8%E7%B3%BB%E7%BB%9F">10.1 启动系统</h3>
+<h4 id="%E6%96%B9%E5%BC%8F-1%E6%9C%AC%E5%9C%B0%E8%BF%90%E8%A1%8C">方式 1：本地运行</h4>
+<pre class="hljs"><code><div><span class="hljs-comment"># 1. 激活虚拟环境</span>
+<span class="hljs-built_in">source</span> venv/bin/activate  <span class="hljs-comment"># Linux/macOS</span>
+<span class="hljs-comment"># 或</span>
+venv\Scripts\activate     <span class="hljs-comment"># Windows</span>
+
+<span class="hljs-comment"># 2. 启动服务</span>
+python run_server.py
+
+<span class="hljs-comment"># 3. 等待启动完成</span>
+<span class="hljs-comment"># 看到 "Uvicorn running on http://127.0.0.1:8000" 表示成功</span>
+</div></code></pre>
+<h4 id="%E6%96%B9%E5%BC%8F-2docker-%E8%BF%90%E8%A1%8C">方式 2：Docker 运行</h4>
+<pre class="hljs"><code><div><span class="hljs-comment"># 1. 构建镜像（首次运行）</span>
+docker build -t ecu-log-visualizer:latest .
+
+<span class="hljs-comment"># 2. 运行容器</span>
+docker run -d -p 8000:8000 --name ecu-log-visualizer ecu-log-visualizer:latest
+
+<span class="hljs-comment"># 3. 检查状态</span>
+docker ps | grep ecu-log-visualizer
+</div></code></pre>
+<h3 id="102-%E4%B8%8A%E4%BC%A0%E6%97%A5%E5%BF%97%E6%96%87%E4%BB%B6">10.2 上传日志文件</h3>
+<h4 id="%E6%AD%A5%E9%AA%A4-1%E6%89%93%E5%BC%80%E5%BA%94%E7%94%A8">步骤 1：打开应用</h4>
+<p>在浏览器中访问：http://localhost:8000</p>
+<h4 id="%E6%AD%A5%E9%AA%A4-2%E9%80%89%E6%8B%A9%E6%96%87%E4%BB%B6">步骤 2：选择文件</h4>
+<ol>
+<li>点击&quot;选择文件&quot;按钮</li>
+<li>浏览到日志文件位置</li>
+<li>选择 CSV 或 JSON 格式的日志文件</li>
+</ol>
+<p><strong>支持的格式</strong>：</p>
+<ul>
+<li>CSV: 逗号分隔值文件</li>
+<li>JSON: JavaScript 对象表示法文件</li>
+</ul>
+<p><strong>文件大小限制</strong>：最大 50MB</p>
+<h4 id="%E6%AD%A5%E9%AA%A4-3%E4%B8%8A%E4%BC%A0%E6%96%87%E4%BB%B6">步骤 3：上传文件</h4>
+<ol>
+<li>点击&quot;上传文件&quot;按钮</li>
+<li>等待上传进度条完成</li>
+<li>上传成功后显示文件信息</li>
+</ol>
+<p><strong>上传成功标志</strong>：</p>
+<ul>
+<li>显示文件 ID</li>
+<li>显示文件名和大小</li>
+<li>显示上传时间</li>
+</ul>
+<h3 id="103-%E6%9F%A5%E7%9C%8B%E7%BB%9F%E8%AE%A1%E4%BF%A1%E6%81%AF">10.3 查看统计信息</h3>
+<p>上传成功后，系统自动显示统计信息：</p>
+<p><strong>统计表格包含</strong>：</p>
+<ul>
+<li>传感器名称</li>
+<li>最小值 (Min)</li>
+<li>最大值 (Max)</li>
+<li>平均值 (Mean)</li>
+<li>标准差 (Std)</li>
+<li>数据点数量 (Count)</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<pre class="hljs"><code><div>传感器      最小值    最大值    平均值    标准差    数量
+sensor1     20.5     85.3     52.4     12.8     1000
+sensor2     0.0      100.0    50.2     25.6     1000
+sensor3     -10.0    45.0     15.3     8.9      1000
+</div></code></pre>
+<h3 id="104-%E6%9F%A5%E7%9C%8B%E5%8F%AF%E8%A7%86%E5%8C%96%E5%9B%BE%E8%A1%A8">10.4 查看可视化图表</h3>
+<p>统计信息下方自动显示交互式图表：</p>
+<p><strong>图表功能</strong>：</p>
+<ul>
+<li><strong>缩放</strong>: 鼠标滚轮或拖动选择区域</li>
+<li><strong>平移</strong>: 按住鼠标左键拖动</li>
+<li><strong>悬停</strong>: 鼠标悬停查看具体数值</li>
+<li><strong>图例</strong>: 点击图例显示/隐藏传感器</li>
+<li><strong>重置</strong>: 双击图表重置视图</li>
+</ul>
+<p><strong>图表类型</strong>：</p>
+<ul>
+<li>时间序列折线图</li>
+<li>多传感器叠加显示</li>
+<li>X 轴：时间戳</li>
+<li>Y 轴：传感器读数</li>
+</ul>
+<h3 id="105-%E4%BD%BF%E7%94%A8%E8%BF%87%E6%BB%A4%E5%8A%9F%E8%83%BD">10.5 使用过滤功能</h3>
+<h4 id="%E6%97%B6%E9%97%B4%E8%8C%83%E5%9B%B4%E8%BF%87%E6%BB%A4">时间范围过滤</h4>
+<ol>
+<li>在&quot;开始时间&quot;输入框选择起始时间</li>
+<li>在&quot;结束时间&quot;输入框选择结束时间</li>
+<li>点击&quot;应用过滤&quot;按钮</li>
+</ol>
+<p><strong>效果</strong>：</p>
+<ul>
+<li>统计信息更新为过滤后的数据</li>
+<li>图表只显示选定时间范围的数据</li>
+</ul>
+<h4 id="%E4%BC%A0%E6%84%9F%E5%99%A8%E8%BF%87%E6%BB%A4">传感器过滤</h4>
+<ol>
+<li>在&quot;选择传感器&quot;下拉框中选择传感器</li>
+<li>可以选择多个传感器</li>
+<li>点击&quot;应用过滤&quot;按钮</li>
+</ol>
+<p><strong>效果</strong>：</p>
+<ul>
+<li>统计信息只显示选定的传感器</li>
+<li>图表只显示选定的传感器曲线</li>
+</ul>
+<h4 id="%E7%BB%84%E5%90%88%E8%BF%87%E6%BB%A4">组合过滤</h4>
+<p>可以同时使用时间范围和传感器过滤：</p>
+<ol>
+<li>选择时间范围</li>
+<li>选择传感器</li>
+<li>点击&quot;应用过滤&quot;</li>
+</ol>
+<h3 id="106-%E5%AF%BC%E5%87%BA%E6%95%B0%E6%8D%AE">10.6 导出数据</h3>
+<h4 id="%E5%AF%BC%E5%87%BA-csv-%E6%A0%BC%E5%BC%8F">导出 CSV 格式</h4>
+<ol>
+<li>点击&quot;导出 CSV&quot;按钮</li>
+<li>浏览器自动下载文件</li>
+<li>文件名格式：<code>export_{file_id}_{timestamp}.csv</code></li>
+</ol>
+<p><strong>CSV 内容</strong>：</p>
+<ul>
+<li>包含过滤后的所有数据</li>
+<li>包含导出元数据（时间戳、过滤参数）</li>
+</ul>
+<h4 id="%E5%AF%BC%E5%87%BA-json-%E6%A0%BC%E5%BC%8F">导出 JSON 格式</h4>
+<ol>
+<li>点击&quot;导出 JSON&quot;按钮</li>
+<li>浏览器自动下载文件</li>
+<li>文件名格式：<code>export_{file_id}_{timestamp}.json</code></li>
+</ol>
+<p><strong>JSON 内容</strong>：</p>
+<ul>
+<li>包含过滤后的所有数据</li>
+<li>包含导出元数据</li>
+<li>结构化的 JSON 格式</li>
+</ul>
+<h3 id="107-%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E5%88%97%E8%A1%A8">10.7 查看文件列表</h3>
+<p>点击&quot;文件列表&quot;标签查看所有已上传的文件：</p>
+<p><strong>显示信息</strong>：</p>
+<ul>
+<li>文件 ID</li>
+<li>原始文件名</li>
+<li>上传时间</li>
+<li>文件大小</li>
+<li>操作按钮（查看、删除）</li>
+</ul>
+<h3 id="108-%E5%81%9C%E6%AD%A2%E7%B3%BB%E7%BB%9F">10.8 停止系统</h3>
+<h4 id="%E6%9C%AC%E5%9C%B0%E8%BF%90%E8%A1%8C">本地运行</h4>
+<p>在终端中按 <code>Ctrl+C</code> 停止服务器</p>
+<h4 id="docker-%E8%BF%90%E8%A1%8C">Docker 运行</h4>
+<pre class="hljs"><code><div><span class="hljs-comment"># 停止容器</span>
+docker stop ecu-log-visualizer
+
+<span class="hljs-comment"># 删除容器（可选）</span>
+docker rm ecu-log-visualizer
+</div></code></pre>
+<hr>
+<h2 id="11-%E7%B3%BB%E7%BB%9F%E5%8E%9F%E7%90%86%E8%AF%B4%E6%98%8E-for-interns--learning">11. 系统原理说明 (For Interns / Learning)</h2>
+<h3 id="111-ecu-%E6%97%A5%E5%BF%97%E6%95%B0%E6%8D%AE%E6%98%AF%E4%BB%80%E4%B9%88">11.1 ECU 日志数据是什么</h3>
+<p><strong>ECU (Electronic Control Unit)</strong> 是汽车电子控制单元，负责控制发动机、变速箱、制动系统等。</p>
+<p><strong>ECU 日志</strong>包含：</p>
+<ul>
+<li><strong>时间戳</strong>: 记录数据的时间</li>
+<li><strong>传感器读数</strong>: 温度、压力、速度等</li>
+<li><strong>状态信息</strong>: 系统运行状态</li>
+<li><strong>错误代码</strong>: 故障信息</li>
+</ul>
+<p><strong>示例日志（CSV 格式）</strong>：</p>
+<pre class="hljs"><code><div>timestamp,engine_temp,oil_pressure,vehicle_speed,status
+2024-01-01T00:00:00,85.5,45.2,60.0,OK
+2024-01-01T00:00:01,85.6,45.3,60.5,OK
+2024-01-01T00:00:02,85.7,45.1,61.0,OK
+</div></code></pre>
+<p><strong>为什么需要分析日志</strong>：</p>
+<ul>
+<li>诊断故障</li>
+<li>性能优化</li>
+<li>质量验证</li>
+<li>趋势分析</li>
+</ul>
+<h3 id="112-%E6%97%A5%E5%BF%97%E5%A6%82%E4%BD%95%E8%A2%AB%E8%A7%A3%E6%9E%90">11.2 日志如何被解析</h3>
+<h4 id="%E6%AD%A5%E9%AA%A4-1%E6%96%87%E4%BB%B6%E8%AF%BB%E5%8F%96">步骤 1：文件读取</h4>
+<p>系统使用 Python 的 Pandas 库读取文件：</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># CSV 格式</span>
+df = pd.read_csv(file_path)
+
+<span class="hljs-comment"># JSON 格式</span>
+df = pd.read_json(file_path)
+</div></code></pre>
+<h4 id="%E6%AD%A5%E9%AA%A4-2%E6%95%B0%E6%8D%AE%E6%8F%90%E5%8F%96">步骤 2：数据提取</h4>
+<p>从 DataFrame 中提取关键信息：</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># 提取时间戳列</span>
+timestamps = df[<span class="hljs-string">'timestamp'</span>]
+
+<span class="hljs-comment"># 提取传感器列（所有非时间戳、非状态的数值列）</span>
+sensor_columns = [col <span class="hljs-keyword">for</span> col <span class="hljs-keyword">in</span> df.columns 
+                  <span class="hljs-keyword">if</span> col <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> [<span class="hljs-string">'timestamp'</span>, <span class="hljs-string">'status'</span>]]
+</div></code></pre>
+<h4 id="%E6%AD%A5%E9%AA%A4-3%E6%95%B0%E6%8D%AE%E9%AA%8C%E8%AF%81">步骤 3：数据验证</h4>
+<p>验证数据的有效性：</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># 验证时间戳格式</span>
+df[<span class="hljs-string">'timestamp'</span>] = pd.to_datetime(df[<span class="hljs-string">'timestamp'</span>])
+
+<span class="hljs-comment"># 验证数值范围</span>
+df = df[df[<span class="hljs-string">'engine_temp'</span>] &gt;= <span class="hljs-number">-50</span>]  <span class="hljs-comment"># 温度不能低于 -50°C</span>
+df = df[df[<span class="hljs-string">'engine_temp'</span>] &lt;= <span class="hljs-number">200</span>]  <span class="hljs-comment"># 温度不能高于 200°C</span>
+
+<span class="hljs-comment"># 排序数据（按时间）</span>
+df = df.sort_values(<span class="hljs-string">'timestamp'</span>)
+</div></code></pre>
+<h4 id="%E6%AD%A5%E9%AA%A4-4%E6%95%B0%E6%8D%AE%E6%B8%85%E6%B4%97">步骤 4：数据清洗</h4>
+<p>处理异常数据：</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># 删除缺失值</span>
+df = df.dropna()
+
+<span class="hljs-comment"># 删除重复记录</span>
+df = df.drop_duplicates()
+
+<span class="hljs-comment"># 过滤非数值数据</span>
+df = df[df[<span class="hljs-string">'engine_temp'</span>].apply(<span class="hljs-keyword">lambda</span> x: isinstance(x, (int, float)))]
+</div></code></pre>
+<h3 id="113-%E6%95%B0%E6%8D%AE%E5%A6%82%E4%BD%95%E8%A2%AB%E7%BB%9F%E8%AE%A1">11.3 数据如何被统计</h3>
+<p>使用 Pandas 的统计函数：</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># 计算最小值</span>
+min_value = df[<span class="hljs-string">'engine_temp'</span>].min()
+
+<span class="hljs-comment"># 计算最大值</span>
+max_value = df[<span class="hljs-string">'engine_temp'</span>].max()
+
+<span class="hljs-comment"># 计算平均值</span>
+mean_value = df[<span class="hljs-string">'engine_temp'</span>].mean()
+
+<span class="hljs-comment"># 计算标准差</span>
+std_value = df[<span class="hljs-string">'engine_temp'</span>].std()
+
+<span class="hljs-comment"># 计算数据点数量</span>
+count = len(df[<span class="hljs-string">'engine_temp'</span>])
+</div></code></pre>
+<p><strong>统计意义</strong>：</p>
+<ul>
+<li><strong>最小值</strong>: 传感器读数的最低点</li>
+<li><strong>最大值</strong>: 传感器读数的最高点</li>
+<li><strong>平均值</strong>: 传感器读数的中心趋势</li>
+<li><strong>标准差</strong>: 数据的离散程度（波动大小）</li>
+</ul>
+<h3 id="114-%E5%8F%AF%E8%A7%86%E5%8C%96%E5%A6%82%E4%BD%95%E7%94%9F%E6%88%90">11.4 可视化如何生成</h3>
+<h4 id="%E6%AD%A5%E9%AA%A4-1%E5%87%86%E5%A4%87%E6%95%B0%E6%8D%AE">步骤 1：准备数据</h4>
+<p>将 DataFrame 转换为 Plotly 需要的格式：</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># 创建 trace（数据轨迹）</span>
+trace = {
+    <span class="hljs-string">'x'</span>: df[<span class="hljs-string">'timestamp'</span>].tolist(),  <span class="hljs-comment"># X 轴：时间</span>
+    <span class="hljs-string">'y'</span>: df[<span class="hljs-string">'engine_temp'</span>].tolist(),  <span class="hljs-comment"># Y 轴：温度</span>
+    <span class="hljs-string">'type'</span>: <span class="hljs-string">'scatter'</span>,  <span class="hljs-comment"># 图表类型：散点图</span>
+    <span class="hljs-string">'mode'</span>: <span class="hljs-string">'lines'</span>,  <span class="hljs-comment"># 显示模式：线条</span>
+    <span class="hljs-string">'name'</span>: <span class="hljs-string">'Engine Temperature'</span>  <span class="hljs-comment"># 图例名称</span>
+}
+</div></code></pre>
+<h4 id="%E6%AD%A5%E9%AA%A4-2%E9%85%8D%E7%BD%AE%E5%9B%BE%E8%A1%A8">步骤 2：配置图表</h4>
+<p>设置图表的布局和样式：</p>
+<pre class="hljs"><code><div>layout = {
+    <span class="hljs-string">'title'</span>: <span class="hljs-string">'ECU Sensor Data'</span>,
+    <span class="hljs-string">'xaxis'</span>: {<span class="hljs-string">'title'</span>: <span class="hljs-string">'Time'</span>},
+    <span class="hljs-string">'yaxis'</span>: {<span class="hljs-string">'title'</span>: <span class="hljs-string">'Value'</span>},
+    <span class="hljs-string">'hovermode'</span>: <span class="hljs-string">'closest'</span>
+}
+</div></code></pre>
+<h4 id="%E6%AD%A5%E9%AA%A4-3%E7%94%9F%E6%88%90-json">步骤 3：生成 JSON</h4>
+<p>将图表配置转换为 JSON 格式：</p>
+<pre class="hljs"><code><div>chart_data = {
+    <span class="hljs-string">'data'</span>: [trace],
+    <span class="hljs-string">'layout'</span>: layout
+}
+
+<span class="hljs-comment"># 返回给前端</span>
+<span class="hljs-keyword">return</span> json.dumps(chart_data)
+</div></code></pre>
+<h4 id="%E6%AD%A5%E9%AA%A4-4%E5%89%8D%E7%AB%AF%E6%B8%B2%E6%9F%93">步骤 4：前端渲染</h4>
+<p>前端使用 Plotly.js 渲染图表：</p>
+<pre class="hljs"><code><div><span class="hljs-comment">// 获取图表数据</span>
+fetch(<span class="hljs-string">'/api/chart/file_id'</span>)
+  .then(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> response.json())
+  .then(<span class="hljs-function"><span class="hljs-params">chartData</span> =&gt;</span> {
+    <span class="hljs-comment">// 渲染图表</span>
+    Plotly.newPlot(<span class="hljs-string">'chart-div'</span>, chartData.data, chartData.layout);
+  });
+</div></code></pre>
+<h3 id="115-%E7%B3%BB%E7%BB%9F%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B%E6%80%BB%E7%BB%93">11.5 系统工作流程总结</h3>
+<pre class="hljs"><code><div>用户上传文件
+    ↓
+文件验证（格式、大小）
+    ↓
+保存文件（生成 UUID）
+    ↓
+解析文件（CSV/JSON → DataFrame）
+    ↓
+数据验证和清洗
+    ↓
+计算统计信息
+    ↓
+生成可视化配置
+    ↓
+返回给前端
+    ↓
+前端渲染展示
+</div></code></pre>
+<hr>
+<h2 id="12-%E7%B3%BB%E7%BB%9F%E5%A4%8D%E7%8E%B0%E6%8C%87%E5%8D%97-reproduction-guide">12. 系统复现指南 (Reproduction Guide)</h2>
+<p>本指南帮助新人从零开始复现整个项目。</p>
+<h3 id="121-%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87">12.1 环境准备</h3>
+<h4 id="%E6%AD%A5%E9%AA%A4-1%E5%AE%89%E8%A3%85-python">步骤 1：安装 Python</h4>
+<p><strong>Windows</strong>:</p>
+<ol>
+<li>访问 https://www.python.org/downloads/</li>
+<li>下载 Python 3.12 安装包</li>
+<li>运行安装程序，勾选&quot;Add Python to PATH&quot;</li>
+<li>验证安装：<code>python --version</code></li>
+</ol>
+<p><strong>macOS</strong>:</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># 使用 Homebrew</span>
+brew install python@3.12
+
+<span class="hljs-comment"># 验证安装</span>
+python3 --version
+</div></code></pre>
+<p><strong>Linux (Ubuntu)</strong>:</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># 更新包列表</span>
+sudo apt update
+
+<span class="hljs-comment"># 安装 Python 3.12</span>
+sudo apt install python3.12 python3.12-venv python3-pip
+
+<span class="hljs-comment"># 验证安装</span>
+python3 --version
+</div></code></pre>
+<h4 id="%E6%AD%A5%E9%AA%A4-2%E5%AE%89%E8%A3%85-git">步骤 2：安装 Git</h4>
+<p><strong>Windows</strong>:</p>
+<ol>
+<li>访问 https://git-scm.com/download/win</li>
+<li>下载并安装 Git</li>
+<li>验证安装：<code>git --version</code></li>
+</ol>
+<p><strong>macOS</strong>:</p>
+<pre class="hljs"><code><div>brew install git
+git --version
+</div></code></pre>
+<p><strong>Linux</strong>:</p>
+<pre class="hljs"><code><div>sudo apt install git
+git --version
+</div></code></pre>
+<h4 id="%E6%AD%A5%E9%AA%A4-3%E5%AE%89%E8%A3%85-docker%E5%8F%AF%E9%80%89">步骤 3：安装 Docker（可选）</h4>
+<p><strong>Windows/macOS</strong>:</p>
+<ol>
+<li>访问 https://www.docker.com/products/docker-desktop</li>
+<li>下载并安装 Docker Desktop</li>
+<li>启动 Docker Desktop</li>
+<li>验证安装：<code>docker --version</code></li>
+</ol>
+<p><strong>Linux</strong>:</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># 安装 Docker</span>
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+
+<span class="hljs-comment"># 启动 Docker</span>
+sudo systemctl start docker
+
+<span class="hljs-comment"># 验证安装</span>
+docker --version
+</div></code></pre>
+<h3 id="122-%E8%8E%B7%E5%8F%96%E4%BB%A3%E7%A0%81">12.2 获取代码</h3>
+<pre class="hljs"><code><div><span class="hljs-comment"># 克隆仓库</span>
+git <span class="hljs-built_in">clone</span> https://github.com/your-org/ecu-log-visualizer.git
+
+<span class="hljs-comment"># 进入项目目录</span>
+<span class="hljs-built_in">cd</span> ecu-log-visualizer
+
+<span class="hljs-comment"># 查看项目结构</span>
+ls -la
+</div></code></pre>
+<h3 id="123-%E9%85%8D%E7%BD%AE%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83">12.3 配置开发环境</h3>
+<h4 id="%E6%AD%A5%E9%AA%A4-1%E5%88%9B%E5%BB%BA%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83">步骤 1：创建虚拟环境</h4>
+<pre class="hljs"><code><div><span class="hljs-comment"># 创建虚拟环境</span>
+python -m venv venv
+
+<span class="hljs-comment"># 激活虚拟环境</span>
+<span class="hljs-comment"># Windows:</span>
+venv\Scripts\activate
+<span class="hljs-comment"># Linux/macOS:</span>
+<span class="hljs-built_in">source</span> venv/bin/activate
+
+<span class="hljs-comment"># 验证虚拟环境</span>
+<span class="hljs-built_in">which</span> python  <span class="hljs-comment"># Linux/macOS</span>
+<span class="hljs-built_in">where</span> python  <span class="hljs-comment"># Windows</span>
+</div></code></pre>
+<h4 id="%E6%AD%A5%E9%AA%A4-2%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96">步骤 2：安装依赖</h4>
+<pre class="hljs"><code><div><span class="hljs-comment"># 升级 pip</span>
+python -m pip install --upgrade pip
+
+<span class="hljs-comment"># 安装项目依赖</span>
+pip install -r requirements.txt
+
+<span class="hljs-comment"># 验证安装</span>
+pip list
+</div></code></pre>
+<h4 id="%E6%AD%A5%E9%AA%A4-3%E9%AA%8C%E8%AF%81%E5%AE%89%E8%A3%85">步骤 3：验证安装</h4>
+<pre class="hljs"><code><div><span class="hljs-comment"># 运行测试</span>
+pytest tests/ -v
+
+<span class="hljs-comment"># 预期结果：所有测试通过</span>
+</div></code></pre>
+<h3 id="124-%E8%BF%90%E8%A1%8C%E7%B3%BB%E7%BB%9F">12.4 运行系统</h3>
+<h4 id="%E6%9C%AC%E5%9C%B0%E8%BF%90%E8%A1%8C">本地运行</h4>
+<pre class="hljs"><code><div><span class="hljs-comment"># 启动服务器</span>
+python run_server.py
+
+<span class="hljs-comment"># 在浏览器中访问</span>
+<span class="hljs-comment"># http://localhost:8000</span>
+</div></code></pre>
+<h4 id="docker-%E8%BF%90%E8%A1%8C">Docker 运行</h4>
+<pre class="hljs"><code><div><span class="hljs-comment"># 构建镜像</span>
+docker build -t ecu-log-visualizer:latest .
+
+<span class="hljs-comment"># 运行容器</span>
+docker run -d -p 8000:8000 --name ecu-log-visualizer ecu-log-visualizer:latest
+
+<span class="hljs-comment"># 查看日志</span>
+docker logs -f ecu-log-visualizer
+</div></code></pre>
+<h3 id="125-%E9%85%8D%E7%BD%AE-cicd">12.5 配置 CI/CD</h3>
+<h4 id="github-actions">GitHub Actions</h4>
+<ol>
+<li>在 GitHub 上创建仓库</li>
+<li>推送代码到 GitHub</li>
+<li>GitHub Actions 自动运行</li>
+</ol>
+<pre class="hljs"><code><div><span class="hljs-comment"># 添加远程仓库</span>
+git remote add origin https://github.com/your-org/ecu-log-visualizer.git
+
+<span class="hljs-comment"># 推送代码</span>
+git push -u origin main
+</div></code></pre>
+<ol start="4">
+<li>访问 GitHub 仓库的 Actions 标签查看 CI 运行状态</li>
+</ol>
+<h4 id="jenkins">Jenkins</h4>
+<ol>
+<li>安装 Jenkins</li>
+<li>创建新的 Pipeline 项目</li>
+<li>配置 Git 仓库 URL</li>
+<li>指定 Jenkinsfile 路径</li>
+<li>保存并运行</li>
+</ol>
+<h3 id="126-%E9%AA%8C%E8%AF%81%E5%AE%8C%E6%95%B4%E6%B5%81%E7%A8%8B">12.6 验证完整流程</h3>
+<h4 id="%E6%AD%A5%E9%AA%A4-1%E4%BF%AE%E6%94%B9%E4%BB%A3%E7%A0%81">步骤 1：修改代码</h4>
+<pre class="hljs"><code><div><span class="hljs-comment"># 创建新分支</span>
+git checkout -b feature/<span class="hljs-built_in">test</span>-change
+
+<span class="hljs-comment"># 修改文件（例如 README.md）</span>
+<span class="hljs-built_in">echo</span> <span class="hljs-string">"Test change"</span> &gt;&gt; README.md
+
+<span class="hljs-comment"># 提交更改</span>
+git add README.md
+git commit -m <span class="hljs-string">"test: verify CI/CD pipeline"</span>
+</div></code></pre>
+<h4 id="%E6%AD%A5%E9%AA%A4-2%E6%8E%A8%E9%80%81%E5%88%B0-github">步骤 2：推送到 GitHub</h4>
+<pre class="hljs"><code><div><span class="hljs-comment"># 推送分支</span>
+git push origin feature/<span class="hljs-built_in">test</span>-change
+</div></code></pre>
+<h4 id="%E6%AD%A5%E9%AA%A4-3%E6%9F%A5%E7%9C%8B-ci-%E8%BF%90%E8%A1%8C">步骤 3：查看 CI 运行</h4>
+<ol>
+<li>访问 GitHub 仓库</li>
+<li>点击 &quot;Actions&quot; 标签</li>
+<li>查看工作流运行状态</li>
+<li>等待 CI 完成</li>
+</ol>
+<h4 id="%E6%AD%A5%E9%AA%A4-4%E5%88%9B%E5%BB%BA-pull-request">步骤 4：创建 Pull Request</h4>
+<ol>
+<li>在 GitHub 上创建 PR</li>
+<li>查看 CI 检查结果</li>
+<li>合并 PR（如果 CI 通过）</li>
+</ol>
+<h4 id="%E6%AD%A5%E9%AA%A4-5%E9%AA%8C%E8%AF%81-docker-%E6%9E%84%E5%BB%BA">步骤 5：验证 Docker 构建</h4>
+<pre class="hljs"><code><div><span class="hljs-comment"># 拉取最新代码</span>
+git checkout main
+git pull
+
+<span class="hljs-comment"># 构建 Docker 镜像</span>
+docker build -t ecu-log-visualizer:latest .
+
+<span class="hljs-comment"># 运行容器</span>
+docker run -d -p 8000:8000 --name ecu-log-visualizer ecu-log-visualizer:latest
+
+<span class="hljs-comment"># 验证运行</span>
+curl http://localhost:8000/health
+</div></code></pre>
+<h3 id="127-%E5%AD%A6%E4%B9%A0%E8%B7%AF%E5%BE%84%E5%BB%BA%E8%AE%AE">12.7 学习路径建议</h3>
+<p><strong>第 1 周：基础理解</strong></p>
+<ul>
+<li>阅读本文档</li>
+<li>理解系统架构</li>
+<li>运行系统并测试功能</li>
+</ul>
+<p><strong>第 2 周：代码学习</strong></p>
+<ul>
+<li>阅读源代码</li>
+<li>理解各模块功能</li>
+<li>运行单元测试</li>
+</ul>
+<p><strong>第 3 周：实践操作</strong></p>
+<ul>
+<li>修改代码添加小功能</li>
+<li>编写测试</li>
+<li>提交 PR</li>
+</ul>
+<p><strong>第 4 周：工程实践</strong></p>
+<ul>
+<li>配置 CI/CD</li>
+<li>构建 Docker 镜像</li>
+<li>部署应用</li>
+</ul>
+<hr>
+<h2 id="13-%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5-troubleshooting">13. 故障排查 (Troubleshooting)</h2>
+<h3 id="131-%E7%8E%AF%E5%A2%83%E9%97%AE%E9%A2%98">13.1 环境问题</h3>
+<h4 id="%E9%97%AE%E9%A2%98-1python-%E7%89%88%E6%9C%AC%E4%B8%8D%E5%85%BC%E5%AE%B9">问题 1：Python 版本不兼容</h4>
+<p><strong>症状</strong>：</p>
+<pre class="hljs"><code><div>ERROR: This package requires Python 3.9 or higher
+</div></code></pre>
+<p><strong>解决方案</strong>：</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># 检查 Python 版本</span>
+python --version
+
+<span class="hljs-comment"># 如果版本低于 3.9，升级 Python</span>
+<span class="hljs-comment"># Windows: 下载新版本安装包</span>
+<span class="hljs-comment"># macOS: brew upgrade python</span>
+<span class="hljs-comment"># Linux: sudo apt install python3.12</span>
+</div></code></pre>
+<h4 id="%E9%97%AE%E9%A2%98-2pip-%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96%E5%A4%B1%E8%B4%A5">问题 2：pip 安装依赖失败</h4>
+<p><strong>症状</strong>：</p>
+<pre class="hljs"><code><div>ERROR: Could not find a version that satisfies the requirement
+</div></code></pre>
+<p><strong>解决方案</strong>：</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># 升级 pip</span>
+python -m pip install --upgrade pip
+
+<span class="hljs-comment"># 清除缓存</span>
+pip cache purge
+
+<span class="hljs-comment"># 重新安装</span>
+pip install -r requirements.txt
+
+<span class="hljs-comment"># 如果仍然失败，尝试使用国内镜像</span>
+pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
+</div></code></pre>
+<h4 id="%E9%97%AE%E9%A2%98-3%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83%E6%BF%80%E6%B4%BB%E5%A4%B1%E8%B4%A5">问题 3：虚拟环境激活失败</h4>
+<p><strong>症状</strong>（Windows）：</p>
+<pre class="hljs"><code><div>无法加载文件，因为在此系统上禁止运行脚本
+</div></code></pre>
+<p><strong>解决方案</strong>：</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># 以管理员身份运行 PowerShell</span>
+<span class="hljs-built_in">Set-ExecutionPolicy</span> RemoteSigned
+
+<span class="hljs-comment"># 然后重新激活虚拟环境</span>
+venv\Scripts\activate
+</div></code></pre>
+<h3 id="132-docker-%E9%97%AE%E9%A2%98">13.2 Docker 问题</h3>
+<h4 id="%E9%97%AE%E9%A2%98-1docker-%E5%AE%88%E6%8A%A4%E8%BF%9B%E7%A8%8B%E6%9C%AA%E8%BF%90%E8%A1%8C">问题 1：Docker 守护进程未运行</h4>
+<p><strong>症状</strong>：</p>
+<pre class="hljs"><code><div>Cannot connect to the Docker daemon
+</div></code></pre>
+<p><strong>解决方案</strong>：</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># Windows/macOS: 启动 Docker Desktop</span>
+
+<span class="hljs-comment"># Linux: 启动 Docker 服务</span>
+sudo systemctl start docker
+
+<span class="hljs-comment"># 验证 Docker 运行</span>
+docker ps
+</div></code></pre>
+<h4 id="%E9%97%AE%E9%A2%98-2docker-%E6%9E%84%E5%BB%BA%E5%A4%B1%E8%B4%A5">问题 2：Docker 构建失败</h4>
+<p><strong>症状</strong>：</p>
+<pre class="hljs"><code><div>ERROR: failed to solve: process &quot;/bin/sh -c pip install...&quot; did not complete successfully
+</div></code></pre>
+<p><strong>解决方案</strong>：</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># 清除 Docker 缓存</span>
+docker builder prune
+
+<span class="hljs-comment"># 使用 --no-cache 重新构建</span>
+docker build --no-cache -t ecu-log-visualizer:latest .
+
+<span class="hljs-comment"># 检查 Dockerfile 语法</span>
+docker build --progress=plain -t ecu-log-visualizer:latest .
+</div></code></pre>
+<h4 id="%E9%97%AE%E9%A2%98-3%E7%AB%AF%E5%8F%A3%E5%B7%B2%E8%A2%AB%E5%8D%A0%E7%94%A8">问题 3：端口已被占用</h4>
+<p><strong>症状</strong>：</p>
+<pre class="hljs"><code><div>Error starting userland proxy: listen tcp 0.0.0.0:8000: bind: address already in use
+</div></code></pre>
+<p><strong>解决方案</strong>：</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># 查找占用端口的进程</span>
+<span class="hljs-comment"># Windows:</span>
+netstat -ano | findstr :8000
+
+<span class="hljs-comment"># Linux/macOS:</span>
+lsof -i :8000
+
+<span class="hljs-comment"># 停止占用端口的进程或使用其他端口</span>
+docker run -d -p 8001:8000 --name ecu-log-visualizer ecu-log-visualizer:latest
+</div></code></pre>
+<h3 id="133-cicd-%E9%97%AE%E9%A2%98">13.3 CI/CD 问题</h3>
+<h4 id="%E9%97%AE%E9%A2%98-1github-actions-%E5%A4%B1%E8%B4%A5">问题 1：GitHub Actions 失败</h4>
+<p><strong>症状</strong>：
+CI 工作流显示红色 ❌</p>
+<p><strong>解决方案</strong>：</p>
+<ol>
+<li>点击失败的工作流查看详细日志</li>
+<li>定位失败的步骤</li>
+<li>常见原因：
+<ul>
+<li>测试失败：修复代码或测试</li>
+<li>依赖安装失败：检查 requirements.txt</li>
+<li>代码质量检查失败：运行 <code>flake8 src/</code> 并修复问题</li>
+</ul>
+</li>
+</ol>
+<h4 id="%E9%97%AE%E9%A2%98-2jenkins-%E6%9E%84%E5%BB%BA%E5%A4%B1%E8%B4%A5">问题 2：Jenkins 构建失败</h4>
+<p><strong>症状</strong>：
+Jenkins Pipeline 显示红色</p>
+<p><strong>解决方案</strong>：</p>
+<ol>
+<li>查看 Console Output</li>
+<li>定位失败的 stage</li>
+<li>常见原因：
+<ul>
+<li>权限问题：确保 Jenkins 有权限访问 Git 和 Docker</li>
+<li>环境问题：确保 Jenkins 节点安装了必要的工具</li>
+<li>配置问题：检查 Jenkinsfile 语法</li>
+</ul>
+</li>
+</ol>
+<h3 id="134-%E5%BA%94%E7%94%A8%E8%BF%90%E8%A1%8C%E9%97%AE%E9%A2%98">13.4 应用运行问题</h3>
+<h4 id="%E9%97%AE%E9%A2%98-1%E6%9C%8D%E5%8A%A1%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5">问题 1：服务启动失败</h4>
+<p><strong>症状</strong>：</p>
+<pre class="hljs"><code><div>ERROR: Could not import module 'src.main'
+</div></code></pre>
+<p><strong>解决方案</strong>：</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># 确保在项目根目录</span>
+<span class="hljs-built_in">pwd</span>
+
+<span class="hljs-comment"># 确保虚拟环境已激活</span>
+<span class="hljs-built_in">which</span> python
+
+<span class="hljs-comment"># 确保依赖已安装</span>
+pip list | grep fastapi
+
+<span class="hljs-comment"># 重新安装依赖</span>
+pip install -r requirements.txt
+</div></code></pre>
+<h4 id="%E9%97%AE%E9%A2%98-2%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%A4%B1%E8%B4%A5">问题 2：文件上传失败</h4>
+<p><strong>症状</strong>：
+前端显示&quot;上传失败&quot;</p>
+<p><strong>解决方案</strong>：</p>
+<ol>
+<li>检查文件格式（必须是 CSV 或 JSON）</li>
+<li>检查文件大小（不超过 50MB）</li>
+<li>检查服务器日志：</li>
+</ol>
+<pre class="hljs"><code><div><span class="hljs-comment"># 查看日志</span>
+docker logs ecu-log-visualizer
+
+<span class="hljs-comment"># 或在本地运行时查看终端输出</span>
+</div></code></pre>
+<h4 id="%E9%97%AE%E9%A2%98-3%E5%9B%BE%E8%A1%A8%E4%B8%8D%E6%98%BE%E7%A4%BA">问题 3：图表不显示</h4>
+<p><strong>症状</strong>：
+统计信息显示正常，但图表区域空白</p>
+<p><strong>解决方案</strong>：</p>
+<ol>
+<li>打开浏览器开发者工具（F12）</li>
+<li>查看 Console 标签是否有错误</li>
+<li>检查 Network 标签，确认 API 请求成功</li>
+<li>常见原因：
+<ul>
+<li>Plotly.js 未加载：检查网络连接</li>
+<li>数据格式错误：检查 API 响应</li>
+<li>JavaScript 错误：查看 Console 错误信息</li>
+</ul>
+</li>
+</ol>
+<h3 id="135-%E6%B5%8B%E8%AF%95%E9%97%AE%E9%A2%98">13.5 测试问题</h3>
+<h4 id="%E9%97%AE%E9%A2%98-1%E6%B5%8B%E8%AF%95%E5%A4%B1%E8%B4%A5">问题 1：测试失败</h4>
+<p><strong>症状</strong>：</p>
+<pre class="hljs"><code><div>FAILED tests/unit/test_data_analyzer.py::test_parse_csv
+</div></code></pre>
+<p><strong>解决方案</strong>：</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># 运行单个测试查看详细信息</span>
+pytest tests/unit/test_data_analyzer.py::test_parse_csv -v
+
+<span class="hljs-comment"># 查看完整错误堆栈</span>
+pytest tests/unit/test_data_analyzer.py::test_parse_csv -v --tb=long
+
+<span class="hljs-comment"># 如果是环境问题，重新安装依赖</span>
+pip install -r requirements.txt --force-reinstall
+</div></code></pre>
+<h4 id="%E9%97%AE%E9%A2%98-2%E6%B5%8B%E8%AF%95%E8%A6%86%E7%9B%96%E7%8E%87%E4%BD%8E">问题 2：测试覆盖率低</h4>
+<p><strong>症状</strong>：
+覆盖率报告显示 &lt; 80%</p>
+<p><strong>解决方案</strong>：</p>
+<ol>
+<li>查看覆盖率报告：</li>
+</ol>
+<pre class="hljs"><code><div>pytest tests/ --cov=src --cov-report=html
+open htmlcov/index.html  <span class="hljs-comment"># macOS</span>
+start htmlcov/index.html  <span class="hljs-comment"># Windows</span>
+</div></code></pre>
+<ol start="2">
+<li>识别未覆盖的代码</li>
+<li>编写额外的测试用例</li>
+</ol>
+<hr>
+<h2 id="14-%E6%9C%AA%E6%9D%A5%E6%89%A9%E5%B1%95-future-improvements">14. 未来扩展 (Future Improvements)</h2>
+<h3 id="141-%E5%8A%9F%E8%83%BD%E5%A2%9E%E5%BC%BA">14.1 功能增强</h3>
+<h4 id="1-%E5%AE%9E%E6%97%B6%E6%95%B0%E6%8D%AE%E6%B5%81%E5%A4%84%E7%90%86">1. 实时数据流处理</h4>
+<p><strong>描述</strong>: 支持实时 ECU 数据流接入和可视化</p>
+<p><strong>技术方案</strong>:</p>
+<ul>
+<li>WebSocket 连接</li>
+<li>实时数据推送</li>
+<li>动态图表更新</li>
+</ul>
+<p><strong>价值</strong>:</p>
+<ul>
+<li>实时监控</li>
+<li>即时告警</li>
+<li>动态分析</li>
+</ul>
+<h4 id="2-%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90">2. 高级数据分析</h4>
+<p><strong>描述</strong>: 提供更多统计分析功能</p>
+<p><strong>功能</strong>:</p>
+<ul>
+<li>异常检测算法</li>
+<li>趋势预测</li>
+<li>相关性分析</li>
+<li>频谱分析</li>
+</ul>
+<p><strong>技术</strong>:</p>
+<ul>
+<li>scikit-learn</li>
+<li>TensorFlow</li>
+<li>信号处理库</li>
+</ul>
+<h4 id="3-%E5%A4%9A%E6%96%87%E4%BB%B6%E5%AF%B9%E6%AF%94">3. 多文件对比</h4>
+<p><strong>描述</strong>: 支持多个日志文件的对比分析</p>
+<p><strong>功能</strong>:</p>
+<ul>
+<li>并排显示多个文件的图表</li>
+<li>差异高亮</li>
+<li>性能对比报告</li>
+</ul>
+<h4 id="4-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%8A%A5%E5%91%8A%E7%94%9F%E6%88%90">4. 自定义报告生成</h4>
+<p><strong>描述</strong>: 自动生成分析报告</p>
+<p><strong>功能</strong>:</p>
+<ul>
+<li>PDF 报告导出</li>
+<li>自定义报告模板</li>
+<li>图表和统计信息嵌入</li>
+</ul>
+<p><strong>技术</strong>:</p>
+<ul>
+<li>ReportLab</li>
+<li>Jinja2 模板</li>
+</ul>
+<h3 id="142-%E5%B7%A5%E7%A8%8B%E6%94%B9%E8%BF%9B">14.2 工程改进</h3>
+<h4 id="1-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96">1. 性能优化</h4>
+<p><strong>目标</strong>:</p>
+<ul>
+<li>支持更大文件（100MB+）</li>
+<li>更快的解析速度</li>
+<li>更低的内存占用</li>
+</ul>
+<p><strong>方案</strong>:</p>
+<ul>
+<li>流式处理</li>
+<li>数据分块</li>
+<li>缓存优化</li>
+<li>异步处理</li>
+</ul>
+<h4 id="2-%E5%8F%AF%E6%89%A9%E5%B1%95%E6%80%A7">2. 可扩展性</h4>
+<p><strong>目标</strong>:</p>
+<ul>
+<li>支持分布式部署</li>
+<li>负载均衡</li>
+<li>水平扩展</li>
+</ul>
+<p><strong>方案</strong>:</p>
+<ul>
+<li>Kubernetes 部署</li>
+<li>Redis 缓存</li>
+<li>消息队列（RabbitMQ/Kafka）</li>
+</ul>
+<h4 id="3-%E5%AE%89%E5%85%A8%E5%A2%9E%E5%BC%BA">3. 安全增强</h4>
+<p><strong>功能</strong>:</p>
+<ul>
+<li>用户认证和授权</li>
+<li>数据加密</li>
+<li>访问控制</li>
+<li>审计日志</li>
+</ul>
+<p><strong>技术</strong>:</p>
+<ul>
+<li>OAuth 2.0</li>
+<li>JWT Token</li>
+<li>HTTPS</li>
+<li>数据库加密</li>
+</ul>
+<h4 id="4-%E7%9B%91%E6%8E%A7%E5%92%8C%E5%91%8A%E8%AD%A6">4. 监控和告警</h4>
+<p><strong>功能</strong>:</p>
+<ul>
+<li>应用性能监控（APM）</li>
+<li>错误追踪</li>
+<li>自动告警</li>
+<li>日志聚合</li>
+</ul>
+<p><strong>工具</strong>:</p>
+<ul>
+<li>Prometheus + Grafana</li>
+<li>Sentry</li>
+<li>ELK Stack</li>
+</ul>
+<h3 id="143-%E7%94%A8%E6%88%B7%E4%BD%93%E9%AA%8C">14.3 用户体验</h3>
+<h4 id="1-%E7%A7%BB%E5%8A%A8%E7%AB%AF%E6%94%AF%E6%8C%81">1. 移动端支持</h4>
+<p><strong>描述</strong>: 响应式设计，支持移动设备</p>
+<p><strong>功能</strong>:</p>
+<ul>
+<li>移动端优化界面</li>
+<li>触摸手势支持</li>
+<li>离线功能</li>
+</ul>
+<h4 id="2-%E5%A4%9A%E8%AF%AD%E8%A8%80%E6%94%AF%E6%8C%81">2. 多语言支持</h4>
+<p><strong>描述</strong>: 国际化（i18n）</p>
+<p><strong>支持语言</strong>:</p>
+<ul>
+<li>中文</li>
+<li>英文</li>
+<li>日文</li>
+<li>德文</li>
+</ul>
+<h4 id="3-%E4%B8%BB%E9%A2%98%E5%AE%9A%E5%88%B6">3. 主题定制</h4>
+<p><strong>描述</strong>: 支持自定义主题</p>
+<p><strong>功能</strong>:</p>
+<ul>
+<li>深色模式</li>
+<li>浅色模式</li>
+<li>自定义配色方案</li>
+</ul>
+<h4 id="4-%E5%8D%8F%E4%BD%9C%E5%8A%9F%E8%83%BD">4. 协作功能</h4>
+<p><strong>描述</strong>: 团队协作支持</p>
+<p><strong>功能</strong>:</p>
+<ul>
+<li>文件共享</li>
+<li>评论和标注</li>
+<li>版本历史</li>
+<li>权限管理</li>
+</ul>
+<h3 id="144-%E9%9B%86%E6%88%90%E6%89%A9%E5%B1%95">14.4 集成扩展</h3>
+<h4 id="1-%E7%AC%AC%E4%B8%89%E6%96%B9%E9%9B%86%E6%88%90">1. 第三方集成</h4>
+<p><strong>集成对象</strong>:</p>
+<ul>
+<li>Jira（问题跟踪）</li>
+<li>Slack（通知）</li>
+<li>Confluence（文档）</li>
+<li>GitLab/GitHub（代码）</li>
+</ul>
+<h4 id="2-api-%E6%89%A9%E5%B1%95">2. API 扩展</h4>
+<p><strong>功能</strong>:</p>
+<ul>
+<li>GraphQL API</li>
+<li>Webhook 支持</li>
+<li>批量操作 API</li>
+<li>数据导入/导出 API</li>
+</ul>
+<h4 id="3-%E6%8F%92%E4%BB%B6%E7%B3%BB%E7%BB%9F">3. 插件系统</h4>
+<p><strong>描述</strong>: 支持第三方插件</p>
+<p><strong>功能</strong>:</p>
+<ul>
+<li>自定义数据解析器</li>
+<li>自定义可视化组件</li>
+<li>自定义分析算法</li>
+</ul>
+<hr>
+<h2 id="15-%E9%99%84%E5%BD%95">15. 附录</h2>
+<h3 id="151-%E6%9C%AF%E8%AF%AD%E8%A1%A8">15.1 术语表</h3>
+<table>
+<thead>
+<tr>
+<th>术语</th>
+<th>英文</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ECU</td>
+<td>Electronic Control Unit</td>
+<td>电子控制单元</td>
+</tr>
+<tr>
+<td>CI/CD</td>
+<td>Continuous Integration/Continuous Delivery</td>
+<td>持续集成/持续交付</td>
+</tr>
+<tr>
+<td>API</td>
+<td>Application Programming Interface</td>
+<td>应用程序接口</td>
+</tr>
+<tr>
+<td>REST</td>
+<td>Representational State Transfer</td>
+<td>表述性状态转移</td>
+</tr>
+<tr>
+<td>JSON</td>
+<td>JavaScript Object Notation</td>
+<td>JavaScript 对象表示法</td>
+</tr>
+<tr>
+<td>CSV</td>
+<td>Comma-Separated Values</td>
+<td>逗号分隔值</td>
+</tr>
+<tr>
+<td>UUID</td>
+<td>Universally Unique Identifier</td>
+<td>通用唯一识别码</td>
+</tr>
+<tr>
+<td>DataFrame</td>
+<td>-</td>
+<td>Pandas 数据结构</td>
+</tr>
+<tr>
+<td>Docker</td>
+<td>-</td>
+<td>容器化平台</td>
+</tr>
+<tr>
+<td>Jenkins</td>
+<td>-</td>
+<td>自动化服务器</td>
+</tr>
+</tbody>
+</table>
+<h3 id="152-%E5%8F%82%E8%80%83%E8%B5%84%E6%BA%90">15.2 参考资源</h3>
+<p><strong>官方文档</strong>:</p>
+<ul>
+<li>FastAPI: https://fastapi.tiangolo.com/</li>
+<li>Pandas: https://pandas.pydata.org/docs/</li>
+<li>Plotly: https://plotly.com/python/</li>
+<li>Docker: https://docs.docker.com/</li>
+<li>GitHub Actions: https://docs.github.com/en/actions</li>
+</ul>
+<p><strong>学习资源</strong>:</p>
+<ul>
+<li>Python 教程: https://docs.python.org/3/tutorial/</li>
+<li>Git 教程: https://git-scm.com/book/zh/v2</li>
+<li>Docker 教程: https://docs.docker.com/get-started/</li>
+</ul>
+<p><strong>社区支持</strong>:</p>
+<ul>
+<li>Stack Overflow: https://stackoverflow.com/</li>
+<li>GitHub Discussions: 项目仓库的 Discussions 标签</li>
+</ul>
+<h3 id="153-%E8%81%94%E7%B3%BB%E6%96%B9%E5%BC%8F">15.3 联系方式</h3>
+<p><strong>技术支持</strong>:</p>
+<ul>
+<li>Email: support@example.com</li>
+<li>Issue Tracker: GitHub Issues</li>
+</ul>
+<p><strong>贡献指南</strong>:</p>
+<ul>
+<li>查看 CONTRIBUTING.md</li>
+<li>提交 Pull Request</li>
+<li>参与 Code Review</li>
+</ul>
+<hr>
+<h2 id="%E6%96%87%E6%A1%A3%E7%89%88%E6%9C%AC%E5%8E%86%E5%8F%B2">文档版本历史</h2>
+<table>
+<thead>
+<tr>
+<th>版本</th>
+<th>日期</th>
+<th>作者</th>
+<th>变更说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1.0.0</td>
+<td>2026-03-04</td>
+<td>Kiro AI</td>
+<td>初始版本，完整的技术说明与操作手册</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<p><strong>文档结束</strong></p>
+<p>如有任何问题或建议，请联系技术支持团队或在 GitHub 上提交 Issue。</p>
+
+</body>
+</html>

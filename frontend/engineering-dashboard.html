@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Engineering Dashboard - ECU Log Visualizer</title>
+    <link rel="stylesheet" href="engineering-dashboard.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header Section -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <h1>Engineering Dashboard</h1>
+                <div class="header-controls">
+                    <span class="last-update" id="lastUpdate">Last updated: Never</span>
+                    <button class="refresh-button" id="refreshButton">
+                        <span class="refresh-icon">↻</span> Refresh
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Dashboard Content -->
+        <main class="dashboard-main">
+            <!-- DevOps Pipeline Flow -->
+            <section class="pipeline-flow">
+                <h2 class="flow-title">DevOps Pipeline Flow</h2>
+                <div class="flow-container">
+                    <div class="flow-stage" id="stage-commit">
+                        <div class="stage-icon">👨‍💻</div>
+                        <div class="stage-name">Developer Commit</div>
+                        <div class="stage-status" id="status-commit">●</div>
+                        <div class="stage-time" id="time-commit">--</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    
+                    <div class="flow-stage" id="stage-git">
+                        <div class="stage-icon">📊</div>
+                        <div class="stage-name">Git</div>
+                        <div class="stage-status" id="status-git">●</div>
+                        <div class="stage-time" id="time-git">--</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    
+                    <div class="flow-stage" id="stage-github">
+                        <div class="stage-icon">🐙</div>
+                        <div class="stage-name">GitHub</div>
+                        <div class="stage-status" id="status-github">●</div>
+                        <div class="stage-time" id="time-github">--</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    
+                    <div class="flow-stage" id="stage-cicd">
+                        <div class="stage-icon">🔄</div>
+                        <div class="stage-name">CI/CD Build</div>
+                        <div class="stage-status" id="status-cicd">●</div>
+                        <div class="stage-time" id="time-cicd">--</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    
+                    <div class="flow-stage" id="stage-docker">
+                        <div class="stage-icon">🐳</div>
+                        <div class="stage-name">Docker Image</div>
+                        <div class="stage-status" id="status-docker">●</div>
+                        <div class="stage-time" id="time-docker">--</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    
+                    <div class="flow-stage" id="stage-jenkins">
+                        <div class="stage-icon">🔧</div>
+                        <div class="stage-name">Jenkins Test</div>
+                        <div class="stage-status" id="status-jenkins">●</div>
+                        <div class="stage-time" id="time-jenkins">--</div>
+                    </div>
+                    <div class="flow-arrow">→</div>
+                    
+                    <div class="flow-stage" id="stage-service">
+                        <div class="stage-icon">🚀</div>
+                        <div class="stage-name">Running Service</div>
+                        <div class="stage-status" id="status-service">●</div>
+                        <div class="stage-time" id="time-service">--</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Detailed Panels -->
+            <div class="panels-grid">
+                <!-- Git Activity Panel -->
+                <section class="dashboard-panel" id="gitPanel">
+                    <div class="panel-header">
+                        <h2>
+                            <span class="panel-icon">📊</span>
+                            Git Activity
+                        </h2>
+                        <span class="status-indicator" id="gitStatus"></span>
+                    </div>
+                    <div class="panel-content" id="gitContent">
+                        <div class="loading">Loading Git data...</div>
+                    </div>
+                </section>
+
+                <!-- CI/CD Status Panel -->
+                <section class="dashboard-panel" id="cicdPanel">
+                    <div class="panel-header">
+                        <h2>
+                            <span class="panel-icon">🔄</span>
+                            CI/CD Pipelines
+                        </h2>
+                        <span class="status-indicator" id="cicdStatus"></span>
+                    </div>
+                    <div class="panel-content" id="cicdContent">
+                        <div class="loading">Loading CI/CD data...</div>
+                    </div>
+                </section>
+
+                <!-- Docker Status Panel -->
+                <section class="dashboard-panel" id="dockerPanel">
+                    <div class="panel-header">
+                        <h2>
+                            <span class="panel-icon">🐳</span>
+                            Docker Status
+                        </h2>
+                        <span class="status-indicator" id="dockerStatus"></span>
+                    </div>
+                    <div class="panel-content" id="dockerContent">
+                        <div class="loading">Loading Docker data...</div>
+                    </div>
+                </section>
+
+                <!-- Test Results Panel -->
+                <section class="dashboard-panel" id="testPanel">
+                    <div class="panel-header">
+                        <h2>
+                            <span class="panel-icon">✓</span>
+                            Test Results
+                        </h2>
+                        <span class="status-indicator" id="testStatus"></span>
+                    </div>
+                    <div class="panel-content" id="testContent">
+                        <div class="loading">Loading test data...</div>
+                    </div>
+                </section>
+
+                <!-- API Health Panel -->
+                <section class="dashboard-panel" id="apiPanel">
+                    <div class="panel-header">
+                        <h2>
+                            <span class="panel-icon">🔌</span>
+                            API Health
+                        </h2>
+                        <span class="status-indicator" id="apiStatus"></span>
+                    </div>
+                    <div class="panel-content" id="apiContent">
+                        <div class="loading">Loading API health...</div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <p>ECU Log Visualizer Engineering Dashboard | Auto-refresh: 30s</p>
+        </footer>
+    </div>
+
+    <script src="engineering-dashboard.js"></script>
+</body>
+</html>

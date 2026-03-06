@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECU Log Visualizer</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>ECU Log Visualizer</h1>
+            <p class="subtitle">分析和可视化电子控制单元日志数据</p>
+        </header>
+
+        <!-- File Upload Section -->
+        <section class="upload-section">
+            <h2>上传日志文件</h2>
+            <div class="upload-area" id="uploadArea">
+                <input type="file" id="fileInput" accept=".csv,.json" hidden>
+                <label for="fileInput" class="upload-label">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                    </svg>
+                    <span>点击选择文件或拖拽文件到此处</span>
+                    <span class="file-types">支持 CSV 和 JSON 格式（最大 50MB）</span>
+                </label>
+            </div>
+            <div class="progress-container" id="progressContainer" style="display: none;">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span class="progress-text" id="progressText">0%</span>
+            </div>
+            <div class="message" id="uploadMessage"></div>
+        </section>
+
+        <!-- Filter Controls Section -->
+        <section class="filter-section" id="filterSection" style="display: none;">
+            <h2>数据过滤</h2>
+            <div class="filter-controls">
+                <div class="filter-group">
+                    <label for="startTime">开始时间:</label>
+                    <input type="datetime-local" id="startTime">
+                </div>
+                <div class="filter-group">
+                    <label for="endTime">结束时间:</label>
+                    <input type="datetime-local" id="endTime">
+                </div>
+                <div class="filter-group">
+                    <label for="sensorSelect">传感器选择:</label>
+                    <select id="sensorSelect" multiple size="5">
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                    <small>按住 Ctrl/Cmd 选择多个传感器</small>
+                </div>
+                <div class="filter-actions">
+                    <button id="applyFilters" class="btn btn-primary">应用过滤</button>
+                    <button id="clearFilters" class="btn btn-secondary">清除过滤</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Statistics Section -->
+        <section class="stats-section" id="statsSection" style="display: none;">
+            <h2>统计信息</h2>
+            <div class="stats-container">
+                <table class="stats-table" id="statsTable">
+                    <thead>
+                        <tr>
+                            <th>传感器</th>
+                            <th>最小值</th>
+                            <th>最大值</th>
+                            <th>平均值</th>
+                            <th>标准差</th>
+                            <th>数据点数</th>
+                        </tr>
+                    </thead>
+                    <tbody id="statsTableBody">
+                        <!-- Statistics will be populated dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Chart Section -->
+        <section class="chart-section" id="chartSection" style="display: none;">
+            <h2>时间序列图表</h2>
+            <div id="chartContainer" class="chart-container"></div>
+        </section>
+
+        <!-- Export Section -->
+        <section class="export-section" id="exportSection" style="display: none;">
+            <h2>导出数据</h2>
+            <div class="export-controls">
+                <button id="exportCSV" class="btn btn-export">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    导出为 CSV
+                </button>
+                <button id="exportJSON" class="btn btn-export">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    导出为 JSON
+                </button>
+            </div>
+        </section>
+
+        <!-- Loading Indicator -->
+        <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+            <div class="spinner"></div>
+            <p>加载中...</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard Test</title>
+</head>
+<body>
+    <h1>Testing Dashboard Access</h1>
+    <p>If you can see this, the server is working.</p>
+    
+    <h2>Test Links:</h2>
+    <ul>
+        <li><a href="http://localhost:8000/">Main App</a></li>
+        <li><a href="http://localhost:8000/engineering-dashboard.html">Engineering Dashboard</a></li>
+        <li><a href="http://localhost:8000/docs">API Docs</a></li>
+        <li><a href="http://localhost:8000/health">Health Check</a></li>
+    </ul>
+    
+    <h2>Test API Calls:</h2>
+    <button onclick="testDashboard()">Test Dashboard API</button>
+    <pre id="result"></pre>
+    
+    <script>
+        async function testDashboard() {
+            const result = document.getElementById('result');
+            try {
+                const response = await fetch('http://localhost:8000/api/engineering/dashboard');
+                const data = await response.json();
+                result.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                result.textContent = 'Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>

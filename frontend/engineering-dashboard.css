@@ -1,0 +1,590 @@
+/**
+ * Engineering Dashboard Styles
+ * 
+ * Modern, clean design with card-based layout and color-coded status indicators
+ */
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* Dashboard Container */
+.dashboard-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header */
+.dashboard-header {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.dashboard-header h1 {
+    font-size: 28px;
+    color: #2d3748;
+    font-weight: 700;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.last-update {
+    color: #718096;
+    font-size: 14px;
+}
+
+.refresh-button {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.refresh-button:hover {
+    background: #5568d3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+}
+
+.refresh-button:active {
+    transform: translateY(0);
+}
+
+.refresh-icon {
+    font-size: 18px;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.refresh-button:hover .refresh-icon {
+    transform: rotate(180deg);
+}
+
+/* Main Dashboard Grid */
+.dashboard-main {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+/* Dashboard Panels */
+.dashboard-panel {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-panel:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.panel-header h2 {
+    font-size: 20px;
+    color: #2d3748;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.panel-icon {
+    font-size: 24px;
+}
+
+/* Status Indicators */
+.status-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.status-success {
+    background: #48bb78;
+    box-shadow: 0 0 8px rgba(72, 187, 120, 0.5);
+}
+
+.status-failure {
+    background: #f56565;
+    box-shadow: 0 0 8px rgba(245, 101, 101, 0.5);
+}
+
+.status-warning {
+    background: #ed8936;
+    box-shadow: 0 0 8px rgba(237, 137, 54, 0.5);
+}
+
+.status-unknown {
+    background: #a0aec0;
+}
+
+/* Panel Content */
+.panel-content {
+    min-height: 150px;
+}
+
+.loading {
+    text-align: center;
+    color: #718096;
+    padding: 40px 0;
+    font-style: italic;
+}
+
+.error-message {
+    background: #fed7d7;
+    color: #c53030;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.info-message {
+    background: #bee3f8;
+    color: #2c5282;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+/* Git Stats */
+.git-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.stat-item {
+    background: #f7fafc;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.stat-item strong {
+    color: #4a5568;
+    display: block;
+    margin-bottom: 4px;
+}
+
+/* Commits List */
+.commits-list h3 {
+    font-size: 16px;
+    color: #4a5568;
+    margin-bottom: 12px;
+}
+
+.commit-item {
+    background: #f7fafc;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    border-left: 3px solid #667eea;
+}
+
+.commit-hash {
+    font-family: 'Courier New', monospace;
+    color: #667eea;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.commit-message {
+    color: #2d3748;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.commit-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #718096;
+}
+
+/* CI/CD Pipelines */
+.cicd-pipelines {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.pipeline-section h3 {
+    font-size: 16px;
+    color: #4a5568;
+    margin-bottom: 12px;
+}
+
+.pipeline-status {
+    background: #f7fafc;
+    padding: 16px;
+    border-radius: 8px;
+    border-left: 4px solid #a0aec0;
+}
+
+.pipeline-status.status-success {
+    border-left-color: #48bb78;
+}
+
+.pipeline-status.status-failure {
+    border-left-color: #f56565;
+}
+
+.pipeline-status.status-warning {
+    border-left-color: #ed8936;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.status-success .status-badge {
+    background: #c6f6d5;
+    color: #22543d;
+}
+
+.status-failure .status-badge {
+    background: #fed7d7;
+    color: #742a2a;
+}
+
+.status-warning .status-badge {
+    background: #feebc8;
+    color: #7c2d12;
+}
+
+.status-unknown .status-badge {
+    background: #e2e8f0;
+    color: #4a5568;
+}
+
+.pipeline-info div {
+    font-size: 14px;
+    color: #4a5568;
+    margin-bottom: 4px;
+}
+
+.status-unavailable {
+    color: #718096;
+    font-style: italic;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Docker Info */
+.docker-info {
+    background: #f7fafc;
+    padding: 16px;
+    border-radius: 8px;
+    border-left: 4px solid #a0aec0;
+}
+
+.docker-info.status-success {
+    border-left-color: #48bb78;
+}
+
+.docker-info.status-failure {
+    border-left-color: #f56565;
+}
+
+.docker-info.status-warning {
+    border-left-color: #ed8936;
+}
+
+.docker-details {
+    margin-top: 12px;
+}
+
+.detail-item {
+    font-size: 14px;
+    color: #4a5568;
+    margin-bottom: 8px;
+}
+
+.detail-item strong {
+    color: #2d3748;
+}
+
+/* API Health */
+.api-health {
+    background: #f7fafc;
+    padding: 16px;
+    border-radius: 8px;
+    border-left: 4px solid #a0aec0;
+}
+
+.api-health.status-success {
+    border-left-color: #48bb78;
+}
+
+.api-health.status-failure {
+    border-left-color: #f56565;
+}
+
+.api-details {
+    margin-top: 12px;
+}
+
+/* Test Summary */
+.test-summary {
+    background: #f7fafc;
+    padding: 16px;
+    border-radius: 8px;
+}
+
+/* Footer */
+.dashboard-footer {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    color: #718096;
+    font-size: 14px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard-main {
+        grid-template-columns: 1fr;
+    }
+    
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .header-controls {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .dashboard-header h1 {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .dashboard-container {
+        padding: 12px;
+    }
+    
+    .dashboard-panel {
+        padding: 16px;
+    }
+    
+    .git-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Pipeline Flow Visualization */
+.pipeline-flow {
+    background: white;
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    grid-column: 1 / -1;
+}
+
+.flow-title {
+    font-size: 24px;
+    color: #2d3748;
+    font-weight: 700;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.flow-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 20px 0;
+}
+
+.flow-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+    background: #f7fafc;
+    border-radius: 12px;
+    min-width: 120px;
+    transition: all 0.3s ease;
+    border: 2px solid #e2e8f0;
+}
+
+.flow-stage:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.flow-stage.active {
+    background: #e6fffa;
+    border-color: #48bb78;
+}
+
+.flow-stage.success {
+    background: #c6f6d5;
+    border-color: #48bb78;
+}
+
+.flow-stage.failure {
+    background: #fed7d7;
+    border-color: #f56565;
+}
+
+.flow-stage.warning {
+    background: #feebc8;
+    border-color: #ed8936;
+}
+
+.flow-stage.pending {
+    background: #e2e8f0;
+    border-color: #a0aec0;
+}
+
+.stage-icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+}
+
+.stage-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #2d3748;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.stage-status {
+    font-size: 20px;
+    margin-bottom: 4px;
+}
+
+.stage-status.success {
+    color: #48bb78;
+}
+
+.stage-status.failure {
+    color: #f56565;
+}
+
+.stage-status.warning {
+    color: #ed8936;
+}
+
+.stage-status.pending {
+    color: #a0aec0;
+}
+
+.stage-time {
+    font-size: 11px;
+    color: #718096;
+    text-align: center;
+}
+
+.flow-arrow {
+    font-size: 24px;
+    color: #a0aec0;
+    font-weight: bold;
+}
+
+/* Panels Grid */
+.panels-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 24px;
+}
+
+/* Responsive Pipeline Flow */
+@media (max-width: 1200px) {
+    .flow-container {
+        flex-direction: column;
+    }
+    
+    .flow-arrow {
+        transform: rotate(90deg);
+    }
+}
+
+@media (max-width: 768px) {
+    .pipeline-flow {
+        padding: 20px;
+    }
+    
+    .flow-stage {
+        min-width: 100px;
+        padding: 12px;
+    }
+    
+    .stage-icon {
+        font-size: 24px;
+    }
+    
+    .stage-name {
+        font-size: 12px;
+    }
+    
+    .panels-grid {
+        grid-template-columns: 1fr;
+    }
+}
