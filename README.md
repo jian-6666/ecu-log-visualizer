@@ -354,3 +354,6 @@ GitHub Actions 会在每次推送时自动运行：
 
 - GitHub: [@jian-6666](https://github.com/jian-6666)
 - 项目链接: [https://github.com/jian-6666/ecu-log-visualizer](https://github.com/jian-6666/ecu-log-visualizer)
+
+## Demo Update - 2026-03-06 14:20:09
+This is a live demonstration for leadership review.
