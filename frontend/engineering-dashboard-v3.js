@@ -101,6 +101,35 @@ const api = {
 
 // Render Functions
 const render = {
+    // Update key metrics
+    updateMetrics(gitData, githubData, dockerData) {
+        // Success Rate
+        if (githubData) {
+            const rate = Math.round(githubData.success_rate * 100);
+            document.getElementById('successRate').textContent = `${rate}%`;
+        }
+
+        // Latest Build
+        if (githubData?.latest_run) {
+            const status = githubData.latest_run.conclusion || githubData.latest_run.status;
+            document.getElementById('latestBuild').textContent = status.toUpperCase();
+        }
+
+        // Docker Status
+        if (dockerData) {
+            document.getElementById('dockerStatus').textContent = dockerData.status.toUpperCase();
+        } else {
+            document.getElementById('dockerStatus').textContent = 'NOT RUNNING';
+        }
+
+        // Deployment Status
+        if (dockerData?.status === 'running') {
+            document.getElementById('deploymentStatus').textContent = 'LIVE';
+        } else {
+            document.getElementById('deploymentStatus').textContent = 'STOPPED';
+        }
+    },
+
     // Render detailed pipeline with all CI/CD steps
     pipelineFlow(gitData, githubData, dockerData) {
         const latestCommit = gitData && gitData.length > 0 ? gitData[0] : null;
@@ -204,16 +233,17 @@ const render = {
 
         // Add git commits with details
         if (gitData && gitData.length > 0) {
-            gitData.slice(0, 5).forEach(commit => {
+            gitData.slice(0, 8).forEach(commit => {
                 activities.push({
                     type: 'commit',
                     time: commit.timestamp,
-                    title: 'Code Committed',
-                    details: utils.truncate(commit.message, 80),
+                    title: '📝 Code Committed',
+                    details: utils.truncate(commit.message, 100),
                     meta: [
                         { label: 'SHA', value: commit.short_hash },
                         { label: 'Author', value: commit.author },
-                        { label: 'Branch', value: commit.branch }
+                        { label: 'Branch', value: commit.branch },
+                        { label: 'Files', value: `${commit.files_changed || 'N/A'} changed` }
                     ]
                 });
             });
@@ -221,19 +251,22 @@ const render = {
 
         // Add GitHub Actions runs
         if (githubData?.recent_runs) {
-            githubData.recent_runs.slice(0, 3).forEach(run => {
+            githubData.recent_runs.slice(0, 5).forEach(run => {
                 const status = run.status === 'completed' ? 
                     (run.conclusion === 'success' ? 'success' : 'failure') : 'running';
+                
+                const icon = status === 'success' ? '✅' : status === 'failure' ? '❌' : '⏳';
                 
                 activities.push({
                     type: 'ci',
                     time: run.updated_at,
-                    title: `CI Pipeline ${run.status === 'completed' ? 'Completed' : 'Running'}`,
-                    details: `${run.name} - ${run.conclusion || run.status}`,
+                    title: `${icon} CI Pipeline ${run.status === 'completed' ? 'Completed' : 'Running'}`,
+                    details: `${run.name} - Result: ${run.conclusion || run.status}`,
                     meta: [
                         { label: 'Run ID', value: `#${run.id}` },
                         { label: 'Status', value: run.conclusion || run.status },
-                        { label: 'Started', value: utils.formatDateTime(run.created_at) }
+                        { label: 'Started', value: utils.formatDateTime(run.created_at) },
+                        { label: 'Duration', value: utils.formatDate(run.created_at) }
                     ]
                 });
             });
@@ -244,12 +277,13 @@ const render = {
             activities.push({
                 type: 'docker',
                 time: dockerData.created,
-                title: 'Docker Container Status',
-                details: `Container ${dockerData.name} is ${dockerData.status}`,
+                title: `🐳 Docker Container ${dockerData.status === 'running' ? 'Running' : 'Stopped'}`,
+                details: `Container ${dockerData.name} - Image: ${dockerData.image}`,
                 meta: [
                     { label: 'Image', value: dockerData.image },
                     { label: 'Status', value: dockerData.status },
-                    { label: 'Created', value: utils.formatDateTime(dockerData.created) }
+                    { label: 'Created', value: utils.formatDateTime(dockerData.created) },
+                    { label: 'Ports', value: Object.keys(dockerData.ports).join(', ') || 'None' }
                 ]
             });
         }
@@ -331,7 +365,26 @@ const render = {
     dockerCard(dockerData, gitData) {
         if (!dockerData) {
             document.getElementById('dockerCardContent').innerHTML = `
-                <div class="loading-state">Docker container not found or Docker daemon not accessible</div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">Status</div>
+                        <div class="info-value">
+                            <span class="status-badge failure">NOT RUNNING</span>
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">Container</div>
+                        <div class="info-value mono">${CONFIG.containerName}</div>
+                    </div>
+                </div>
+                <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--color-border); font-size: 0.8125rem; color: var(--color-text-secondary); line-height: 1.6;">
+                    <strong style="color: var(--color-text-primary);">🐳 Why Docker?</strong><br>
+                    • <strong>Consistency:</strong> Same environment everywhere (dev, test, prod)<br>
+                    • <strong>Isolation:</strong> Dependencies packaged with application<br>
+                    • <strong>Portability:</strong> Run anywhere Docker is installed<br>
+                    • <strong>Reproducibility:</strong> Exact same build every time<br>
+                    • <strong>Efficiency:</strong> Fast startup, minimal overhead
+                </div>
             `;
             return;
         }
@@ -365,14 +418,27 @@ const render = {
                     <div class="info-label">Built from Commit</div>
                     <div class="info-value mono">${latestCommit.short_hash}</div>
                 </div>
+                <div class="info-item">
+                    <div class="info-label">Commit Message</div>
+                    <div class="info-value">${utils.truncate(latestCommit.message, 40)}</div>
+                </div>
                 ` : ''}
                 <div class="info-item">
                     <div class="info-label">Ports</div>
                     <div class="info-value mono">${Object.entries(dockerData.ports).map(([k, v]) => `${k}→${v}`).join(', ') || 'None'}</div>
                 </div>
+                <div class="info-item">
+                    <div class="info-label">Uptime</div>
+                    <div class="info-value">${utils.formatDate(dockerData.created)}</div>
+                </div>
             </div>
-            <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--color-border); font-size: 0.8125rem; color: var(--color-text-secondary);">
-                <strong>Why Docker?</strong> Ensures reproducibility, isolation, and portability. This container can run identically on any platform.
+            <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--color-border); font-size: 0.8125rem; color: var(--color-text-secondary); line-height: 1.6;">
+                <strong style="color: var(--color-text-primary);">🐳 Why Docker?</strong><br>
+                • <strong>Consistency:</strong> Same environment everywhere (dev, test, prod)<br>
+                • <strong>Isolation:</strong> Dependencies packaged with application<br>
+                • <strong>Portability:</strong> Run anywhere Docker is installed<br>
+                • <strong>Reproducibility:</strong> Exact same build every time<br>
+                • <strong>Efficiency:</strong> Fast startup, minimal overhead
             </div>
         `;
 
@@ -470,6 +536,7 @@ const dashboard = {
             state.lastUpdate = new Date();
 
             // Render all components
+            render.updateMetrics(gitCommits, githubStatus, dockerStatus);
             render.pipelineFlow(gitCommits, githubStatus, dockerStatus);
             render.activityLog(gitCommits, githubStatus, dockerStatus);
             render.buildStatus(githubStatus);

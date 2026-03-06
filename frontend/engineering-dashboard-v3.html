@@ -30,9 +30,42 @@
     <main class="dashboard-main">
         <!-- Full Pipeline Visualization (Top, Full Width, Prominent) -->
         <section class="pipeline-section">
-            <h2 class="section-title-main">Complete CI/CD Pipeline</h2>
+            <h2 class="section-title-main">🚀 Complete CI/CD Pipeline Flow</h2>
+            <p class="pipeline-description">From developer commit to production deployment - full automation</p>
             <div class="pipeline-flow" id="pipelineFlow">
                 <!-- Detailed pipeline steps will be inserted here -->
+            </div>
+        </section>
+
+        <!-- Key Metrics Row -->
+        <section class="metrics-row">
+            <div class="metric-card">
+                <div class="metric-icon">✅</div>
+                <div class="metric-content">
+                    <div class="metric-label">Build Success Rate</div>
+                    <div class="metric-value" id="successRate">--</div>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon">⚡</div>
+                <div class="metric-content">
+                    <div class="metric-label">Latest Build</div>
+                    <div class="metric-value" id="latestBuild">--</div>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon">🐳</div>
+                <div class="metric-content">
+                    <div class="metric-label">Docker Status</div>
+                    <div class="metric-value" id="dockerStatus">--</div>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-icon">📦</div>
+                <div class="metric-content">
+                    <div class="metric-label">Deployment</div>
+                    <div class="metric-value" id="deploymentStatus">--</div>
+                </div>
             </div>
         </section>
 
@@ -41,7 +74,7 @@
             <!-- Left Column: Engineering Activity Log -->
             <section class="activity-log-section">
                 <div class="section-header">
-                    <h2 class="section-title">Engineering Activity Log</h2>
+                    <h2 class="section-title">📋 Engineering Activity Log</h2>
                     <span class="event-count" id="eventCount">0 events</span>
                 </div>
                 <div class="activity-log-content" id="activityLogContent">
@@ -54,7 +87,7 @@
                 <!-- Current Build Status -->
                 <div class="status-card build-status-card">
                     <div class="card-header">
-                        <h3 class="card-title">Current Build Status</h3>
+                        <h3 class="card-title">🔨 Current Build Status</h3>
                         <span class="status-badge" id="buildStatusBadge">Unknown</span>
                     </div>
                     <div class="card-content" id="buildStatusContent">
@@ -65,7 +98,7 @@
                 <!-- Docker Image Info -->
                 <div class="status-card docker-card">
                     <div class="card-header">
-                        <h3 class="card-title">Docker Image</h3>
+                        <h3 class="card-title">🐳 Docker Container</h3>
                     </div>
                     <div class="card-content" id="dockerCardContent">
                         <div class="loading-state">Loading...</div>
@@ -75,7 +108,7 @@
                 <!-- Deployment Status -->
                 <div class="status-card deployment-card">
                     <div class="card-header">
-                        <h3 class="card-title">Deployment Status</h3>
+                        <h3 class="card-title">🚀 Deployment Status</h3>
                         <span class="status-badge" id="deploymentStatusBadge">Unknown</span>
                     </div>
                     <div class="card-content" id="deploymentCardContent">
@@ -87,6 +120,7 @@
 
         <!-- Bottom Section: Repository Stats -->
         <section class="repo-stats-section">
+            <h3 class="stats-title">📊 Repository Statistics</h3>
             <div class="stats-grid" id="repoStatsGrid">
                 <!-- Stats will be inserted here -->
             </div>
